@@ -2,6 +2,8 @@
 
 Este repositório destina-se à aprendizagem do curso **Algaworks ESPECIALISTA SPRING REST**. Aqui você encontrará os seguintes tópicos:
 
+### Este Repositorio não contem maldade, apenas um meio para guardar as informações e aprendizagens concebidas durante o curso.
+
 ## [SPRING E INJEÇÃO DE DEPENDÊNCIAS](https://www.notion.so/SPRING-E-INJE-O-DE-DEPEND-NCIAS-e149b87074624846a00eceff0e6dfeda?pvs=4)
 
 ## [INTRODUÇÃO AO JPA E HIBERNATE](https://www.notion.so/INTRODU-O-AO-JPA-E-HIBERNATE-cb473159279a44f2a75983acc051cba2?pvs=21)
