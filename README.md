@@ -1,6 +1,6 @@
 # Repositório de Aprendizagem - ESPECIALISTA SPRING REST
 
-Este repositório destina-se à aprendizagem do curso ** ESPECIALISTA SPRING REST**. Aqui você encontrará os seguintes tópicos:
+Este repositório destina-se à aprendizagem do curso **ESPECIALISTA SPRING REST**. Aqui você encontrará os seguintes tópicos:
 
 ### Este Repositorio não contem maldade, apenas um meio para guardar as informações e aprendizagens concebidas durante o curso.
 
