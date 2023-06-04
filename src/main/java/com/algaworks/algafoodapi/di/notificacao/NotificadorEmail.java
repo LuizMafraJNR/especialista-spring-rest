@@ -2,6 +2,7 @@ package com.algaworks.algafoodapi.di.notificacao;
 
 import com.algaworks.algafoodapi.di.model.Cliente;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,10 @@ import org.springframework.stereotype.Component;
 @TipoDoNotificador(NivelUrgencia.NORMAL)
 @Component
 public class NotificadorEmail implements Notificador {
+    @Value("${notificador.email.host-servidor}")
+    private String host;
+    @Value("${notificador.email.porta-servidor}")
+    private Integer porta;
     public NotificadorEmail() {
         System.out.println("Notificador email REAL.");
     }
