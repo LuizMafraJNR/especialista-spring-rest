@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.List;
 
-@Component
+//@Component
 public class AtivacaoClienteService {
     @TipoDoNotificador(NivelUrgencia.URGENTE)// basta aqui apenas para mudar para email ou sms.
     @Autowired(required = false) // 3 forma
@@ -26,6 +28,15 @@ public class AtivacaoClienteService {
 //    public AtivacaoClienteService(String qualquer){
 //
 //    }
+//    @PostConstruct
+    public void init(){
+        System.out.println("Init");
+    }
+
+//    @PreDestroy
+    public void destroy(){
+        System.out.println("Destroy");
+    }
 
     public void ativar(Cliente cliente){
         cliente.setAtivo(true);
