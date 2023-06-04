@@ -3,12 +3,14 @@ package com.algaworks.algafoodapi.di.service;
 import com.algaworks.algafoodapi.di.model.Cliente;
 import com.algaworks.algafoodapi.di.notificacao.Notificador;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class AtivacaoClienteService {
+    @Qualifier("sms") // basta aqui apenas para mudar para email ou sms.
     @Autowired(required = false) // 3 forma
     private Notificador notificador;
 //
