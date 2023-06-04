@@ -30,7 +30,6 @@ public class AtivacaoClienteService {
         } else {
             System.out.println("Não existe notificador, mas cliente foi ativado.");
         }
-        notificador.notificar(cliente, "Seu cadastro no sistema está ativo.");
     }
 
 //    @Autowired // Segunda forma
