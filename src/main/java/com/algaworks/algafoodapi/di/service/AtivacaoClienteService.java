@@ -5,9 +5,11 @@ import com.algaworks.algafoodapi.di.notificacao.Notificador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class AtivacaoClienteService {
-    @Autowired // 3 forma
+    @Autowired(required = false) // 3 forma
     private Notificador notificador;
 //
 //    @Autowired
@@ -23,6 +25,11 @@ public class AtivacaoClienteService {
 
     public void ativar(Cliente cliente){
         cliente.setAtivo(true);
+        if (notificador != null){
+            notificador.notificar(cliente,"Seu cadastro no sistema está ativo");
+        } else {
+            System.out.println("Não existe notificador, mas cliente foi ativado.");
+        }
         notificador.notificar(cliente, "Seu cadastro no sistema está ativo.");
     }
 
