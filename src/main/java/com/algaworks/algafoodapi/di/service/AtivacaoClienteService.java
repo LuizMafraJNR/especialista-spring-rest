@@ -1,54 +1,27 @@
 package com.algaworks.algafoodapi.di.service;
 
 import com.algaworks.algafoodapi.di.model.Cliente;
-import com.algaworks.algafoodapi.di.notificacao.NivelUrgencia;
-import com.algaworks.algafoodapi.di.notificacao.Notificador;
-import com.algaworks.algafoodapi.di.notificacao.TipoDoNotificador;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import java.util.List;
-
-//@Component
+@Component
 public class AtivacaoClienteService {
-    @TipoDoNotificador(NivelUrgencia.URGENTE)// basta aqui apenas para mudar para email ou sms.
-    @Autowired(required = false) // 3 forma
-    private Notificador notificador;
-//
-//    @Autowired
-     // Primeira forma pelo construtor (AutoWired opcional)
-//    public AtivacaoClienteService(Notificador notificador) {
-//        this.notificador = notificador;
-//        System.out.println("Ativação" + notificador);
-//    }
 
-//    public AtivacaoClienteService(String qualquer){
-//
-//    }
-//    @PostConstruct
-    public void init(){
-        System.out.println("Init");
-    }
-
-//    @PreDestroy
-    public void destroy(){
-        System.out.println("Destroy");
-    }
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public void ativar(Cliente cliente){
         cliente.setAtivo(true);
-        if (notificador != null){
-            notificador.notificar(cliente,"Seu cadastro no sistema está ativo");
-        } else {
-            System.out.println("Não existe notificador, mas cliente foi ativado.");
-        }
+
+        // Dizer para o container que o cliente está ativo neste momento.
+        applicationEventPublisher.publishEvent(new ClienteAtivadoEvent(cliente));
     }
 
-//    @Autowired // Segunda forma
-//    public void setNotificador(Notificador notificador) {
-//        this.notificador = notificador;
-//    }
+    public void desativar(Cliente cliente){
+        cliente.setAtivo(false);
+
+        applicationEventPublisher.publishEvent(new DesativacaoClienteEvent(cliente));
+    }
+
 }
