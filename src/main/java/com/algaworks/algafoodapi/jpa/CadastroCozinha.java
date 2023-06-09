@@ -2,6 +2,7 @@ package com.algaworks.algafoodapi.jpa;
 
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,5 +17,9 @@ public class CadastroCozinha {
     public List<Cozinha> listar() {
         TypedQuery<Cozinha> query = entityManager.createQuery("from Cozinha", Cozinha.class);
         return query.getResultList();
+    }
+    @Transactional
+    public Cozinha cadastrar(Cozinha cozinha){
+        return entityManager.merge(cozinha);
     }
 }
