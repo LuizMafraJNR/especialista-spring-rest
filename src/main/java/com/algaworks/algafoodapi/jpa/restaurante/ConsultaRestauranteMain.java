@@ -1,7 +1,6 @@
 package com.algaworks.algafoodapi.jpa.restaurante;
 
 import com.algaworks.algafoodapi.AlgafoodApiApplication;
-import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.infrastructure.repository.RestauranteRepositoryImpl;
 import java.util.List;
@@ -9,7 +8,7 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-public class ConsultaCozinhaMain
+public class ConsultaRestauranteMain
 {
 	public static void main(String[] args)
 	{
