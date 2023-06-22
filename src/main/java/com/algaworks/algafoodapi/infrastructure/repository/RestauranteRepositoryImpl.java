@@ -6,7 +6,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+
+@Component
 public class RestauranteRepositoryImpl implements RestauranteRepository
 
 {
@@ -28,12 +32,14 @@ public class RestauranteRepositoryImpl implements RestauranteRepository
 	}
 
 	@Override
+	@Transactional
 	public Restaurante cadastrar(Restaurante restaurante)
 	{
 		return entityManager.merge(restaurante);
 	}
 
 	@Override
+	@Transactional
 	public void remover(Restaurante restaurante)
 	{
 		restaurante = buscarId(restaurante.getId());

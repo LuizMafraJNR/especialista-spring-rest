@@ -1,22 +1,26 @@
-package com.algaworks.algafoodapi.jpa;
+package com.algaworks.algafoodapi.jpa.cozinha;
 
 import com.algaworks.algafoodapi.AlgafoodApiApplication;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
+import com.algaworks.algafoodapi.infrastructure.repository.CozinhaRepositoryImpl;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-public class BuscaCozinhaPorIdMain {
+import java.util.List;
+
+public class ConsultaCozinhaMain {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        CozinhaRepository cadastroCozinha = applicationContext.getBean(CozinhaRepository.class);
-
-        Cozinha cozinha = cadastroCozinha.buscar(34L);
-        System.out.println(cozinha.getNome());
+        CozinhaRepositoryImpl cadastroCozinha = applicationContext.getBean(CozinhaRepositoryImpl.class);
+        List<Cozinha> list = cadastroCozinha.listar();
+        for(Cozinha lista : list){
+            System.out.println(lista.getNome());
+        }
 
     }
 }

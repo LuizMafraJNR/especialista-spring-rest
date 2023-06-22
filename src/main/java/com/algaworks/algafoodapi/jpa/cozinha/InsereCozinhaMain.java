@@ -1,8 +1,9 @@
-package com.algaworks.algafoodapi.jpa;
+package com.algaworks.algafoodapi.jpa.cozinha;
 
 import com.algaworks.algafoodapi.AlgafoodApiApplication;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
+import com.algaworks.algafoodapi.infrastructure.repository.CozinhaRepositoryImpl;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -15,8 +16,8 @@ public class InsereCozinhaMain {
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        CozinhaRepository cadastroCozinha = applicationContext.getBean(
-            CozinhaRepository.class);
+        CozinhaRepositoryImpl cadastroCozinha = applicationContext.getBean(
+            CozinhaRepositoryImpl.class);
 
         Cozinha cozinha1 = new Cozinha();
         cozinha1.setNome("Cosmopolitan");

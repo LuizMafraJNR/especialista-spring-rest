@@ -1,25 +1,28 @@
-package com.algaworks.algafoodapi.jpa;
+package com.algaworks.algafoodapi.jpa.cozinha;
 
 import com.algaworks.algafoodapi.AlgafoodApiApplication;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
+import com.algaworks.algafoodapi.infrastructure.repository.CozinhaRepositoryImpl;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-import java.util.List;
-
-public class ConsultaCozinhaMain {
+public class AtualizaCozinhaMain {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        CozinhaRepository cadastroCozinha = applicationContext.getBean(CozinhaRepository.class);
-        List<Cozinha> list = cadastroCozinha.listar();
-        for(Cozinha lista : list){
-            System.out.println(lista.getNome());
-        }
+        CozinhaRepositoryImpl cadastroCozinha = applicationContext.getBean(CozinhaRepositoryImpl.class);
+
+        Cozinha cozinha = new Cozinha();
+        cozinha.setId(6L);
+        cozinha.setNome("Cosmopolitan");
+
+        cadastroCozinha.cadastrar(cozinha);
+
+        System.out.println(cadastroCozinha.buscar(3L).getNome());
 
     }
 }
