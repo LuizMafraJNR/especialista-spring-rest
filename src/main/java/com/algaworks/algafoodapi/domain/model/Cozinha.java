@@ -13,7 +13,7 @@ public class Cozinha {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "col_nome")
+    @Column(name = "col_nome", nullable = false)
     private String nome;
 
 }
