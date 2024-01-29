@@ -18,13 +18,13 @@ public class CozinhaController
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     // Não precisa de "{}" se tiver apenas 1 MediaType.
     public List<Cozinha> listar(){
         return cozinhaRepository.listar();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public Cozinha buscar(@PathVariable("id") Long id){
         return cozinhaRepository.buscar(id);
     }
