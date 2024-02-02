@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import com.algaworks.algafoodapi.api.model.CozinhasXmlWrapper;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,16 @@ public class CozinhaController
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     // Não precisa de "{}" se tiver apenas 1 MediaType.
     public List<Cozinha> listar(){
         return cozinhaRepository.listar();
+    }
+
+    // Listar e Customizar o XML na representaçao.
+    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    public CozinhasXmlWrapper listarXml(){
+        return new CozinhasXmlWrapper(cozinhaRepository.listar());
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
