@@ -49,4 +49,10 @@ public class CozinhaController
         headers.add(HttpHeaders.LOCATION, "http://localhost:8080/cozinhas");
         return ResponseEntity.status(HttpStatus.FOUND).headers(headers).build();*/
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Cozinha adicionar(@RequestBody Cozinha cozinha){
+        return cozinhaRepository.cadastrar(cozinha);
+    }
 }

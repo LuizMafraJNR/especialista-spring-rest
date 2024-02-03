@@ -20,8 +20,8 @@ public class Cozinha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty("titulo") //Mudar o nome do atributo na resposta
-    @Column(name = "col_nome", nullable = false)
+    /*@JsonProperty("titulo") //Mudar o nome do atributo na resposta*/
+    @Column(nullable = false)
     private String nome;
 
 }
