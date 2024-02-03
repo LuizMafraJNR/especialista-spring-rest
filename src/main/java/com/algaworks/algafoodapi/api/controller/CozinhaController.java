@@ -39,7 +39,8 @@ public class CozinhaController
         /*return ResponseEntity.status(HttpStatus.OK).body(cozinha);*/
 
         if(cozinha == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            /*return ResponseEntity.status(HttpStatus.NOT_FOUND).build();*/
+            return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.ok(cozinha);
