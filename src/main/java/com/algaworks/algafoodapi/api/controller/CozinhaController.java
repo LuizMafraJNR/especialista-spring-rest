@@ -4,11 +4,9 @@ import com.algaworks.algafoodapi.api.model.CozinhasXmlWrapper;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,7 +29,8 @@ public class CozinhaController
         return new CozinhasXmlWrapper(cozinhaRepository.listar());
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    @ResponseStatus(value = HttpStatus.CREATED) // Só exemplo não usar.
+    @GetMapping(value = "/{id}")
     public Cozinha buscar(@PathVariable("id") Long id){
         return cozinhaRepository.buscar(id);
     }
