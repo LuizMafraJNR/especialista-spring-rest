@@ -3,6 +3,7 @@ package com.algaworks.algafoodapi.api.controller;
 import com.algaworks.algafoodapi.api.model.CozinhasXmlWrapper;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -54,5 +55,18 @@ public class CozinhaController
     @ResponseStatus(HttpStatus.CREATED)
     public Cozinha adicionar(@RequestBody Cozinha cozinha){
         return cozinhaRepository.cadastrar(cozinha);
+    }
+
+    //Atualizar com PUT
+    @PutMapping("/{id}")
+    public ResponseEntity<Cozinha> atualizar(@PathVariable Long id,
+                                             @RequestBody Cozinha cozinha){
+        Cozinha cozinhaAtual = cozinhaRepository.buscar(id);
+        if (cozinha == null){
+            return ResponseEntity.notFound().build();
+        }
+        BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+        cozinhaAtual = cozinhaRepository.cadastrar(cozinhaAtual);
+        return ResponseEntity.ok(cozinhaAtual);
     }
 }
