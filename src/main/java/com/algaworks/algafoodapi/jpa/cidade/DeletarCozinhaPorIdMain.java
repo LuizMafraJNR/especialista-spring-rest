@@ -20,6 +20,6 @@ public class DeletarCozinhaPorIdMain
 		Cidade cidade = new Cidade();
 		cidade = cidadeRepository.buscarPorId(1L);
 		System.out.printf("Cidade %s foi removida\n", cidade.getNome());
-		cidadeRepository.remover(cidade);
+		cidadeRepository.remover(cidade.getId());
 	}
 }
