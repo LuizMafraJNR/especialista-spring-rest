@@ -23,6 +23,6 @@ public class DeletarEstadoPorIdMain
 		Estado estado = new Estado();
 		estado = estadoRepository.buscarPorId(1L);
 		System.out.printf("Cidade %s foi removida\n", estado.getNome());
-		estadoRepository.remover(estado);
+		estadoRepository.remover(estado.getId());
 	}
 }
