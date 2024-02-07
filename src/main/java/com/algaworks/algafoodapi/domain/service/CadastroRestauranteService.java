@@ -18,12 +18,10 @@ public class CadastroRestauranteService {
     private CozinhaRepository cozinhaRepository;
     public Restaurante adicionar(Restaurante restaurante){
         Long cozinhaId = restaurante.getCozinha().getId();
-        Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
-        if (Objects.isNull(cozinha)){
-            throw new EntidadeNaoEncontradaException(
-                    String.format("Não foi encontrado uma cozinha com o ID %d", cozinhaId)
-            );
-        }
+        Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format("Não foi encontrado uma cozinha com o ID %d", cozinhaId)
+                ));
         restaurante.setCozinha(cozinha);
         return restauranteRepository.cadastrar(restaurante);
     }

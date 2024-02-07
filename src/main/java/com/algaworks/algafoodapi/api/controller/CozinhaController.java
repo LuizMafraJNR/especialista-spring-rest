@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cozinhas")//Pode ser colocado aqui o produces tambem. Mas tem que passar o value para o request.
@@ -27,22 +28,25 @@ public class CozinhaController
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     // Não precisa de "{}" se tiver apenas 1 MediaType.
     public List<Cozinha> listar() {
-        return cozinhaRepository.listar();
+        return cozinhaRepository.findAll();
     }
 
     /*@ResponseStatus(value = HttpStatus.CREATED)  Só exemplo não usar.*/
     @GetMapping(value = "/{id}")
     public ResponseEntity<Cozinha> buscar(@PathVariable("id") Long id){
-        Cozinha cozinha = cozinhaRepository.buscar(id);
+        Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
 
         /*return ResponseEntity.status(HttpStatus.OK).body(cozinha);*/
 
-        if(cozinha == null){
+        if(cozinha.isPresent()){
             /*return ResponseEntity.status(HttpStatus.NOT_FOUND).build();*/
-            return ResponseEntity.notFound().build();
-        }
+            return ResponseEntity.ok(cozinha.get());
 
-        return ResponseEntity.ok(cozinha);
+        }
+        return ResponseEntity.notFound().build();
+
+        // OR
+       /* return cozinha.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());*/
 
         /*HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.LOCATION, "http://localhost:8080/cozinhas");
@@ -59,13 +63,13 @@ public class CozinhaController
     @PutMapping("/{id}")
     public ResponseEntity<Cozinha> atualizar(@PathVariable Long id,
                                              @RequestBody Cozinha cozinha){
-        Cozinha cozinhaAtual = cozinhaRepository.buscar(id);
-        if (cozinha == null){
-            return ResponseEntity.notFound().build();
+        Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(id);
+        if (cozinhaAtual.isPresent()){
+            BeanUtils.copyProperties(cozinha, cozinhaAtual.get(), "id");
+            Cozinha cozinhaSalva = cadastroCozinha.cadastrar(cozinhaAtual.get());
+            return ResponseEntity.ok(cozinhaSalva);
         }
-        BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
-        cozinhaAtual = cozinhaRepository.cadastrar(cozinhaAtual);
-        return ResponseEntity.ok(cozinhaAtual);
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
