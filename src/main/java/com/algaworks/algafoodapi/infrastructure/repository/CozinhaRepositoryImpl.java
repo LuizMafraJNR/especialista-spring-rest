@@ -9,9 +9,10 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Repository
 public class CozinhaRepositoryImpl implements CozinhaRepository
 {
 	@PersistenceContext
@@ -30,6 +31,14 @@ public class CozinhaRepositoryImpl implements CozinhaRepository
 	public Cozinha buscar(Long id){
 		return entityManager.find(Cozinha.class, id);
 	}
+
+	@Override
+	public List<Cozinha> buscarPorNome(String nome) {
+		return entityManager.createQuery("from Cozinha where nome like :nome",Cozinha.class)
+				.setParameter("nome", "%"+ nome + "%")
+				.getResultList();
+	}
+
 	@Override
 	@Transactional
 	public void remover(Long id){
