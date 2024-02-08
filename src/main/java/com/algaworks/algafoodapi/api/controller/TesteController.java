@@ -1,23 +1,45 @@
 package com.algaworks.algafoodapi.api.controller;
 
 import com.algaworks.algafoodapi.domain.model.Cozinha;
+import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
+import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/teste")
 public class TesteController {
     @Autowired
     private CozinhaRepository cozinhaRepository;
+    @Autowired
+    private RestauranteRepository restauranteRepository;
 
-    @GetMapping("/buscaNome")
-    public List<Cozinha> nome(@RequestParam String nome){
+    @GetMapping("/buscaNomeTodas")
+    public List<Cozinha> todasPorNome(@RequestParam String nome){
+        return cozinhaRepository.findByNomeContaining(nome);
+    }
+    @GetMapping("/buscaNomeUnico")
+    public Optional<Cozinha> nomeUnico(@RequestParam String nome){
         return cozinhaRepository.findByNome(nome);
+    }
+
+    @GetMapping("/restaurantes/taxaFrete")
+    public List<Restaurante> findBetweenTaxa(@RequestParam BigDecimal taxaInicial,
+                                       @RequestParam BigDecimal taxaFinal){
+        return restauranteRepository.getRestauranteByTaxaFreteBetween(taxaInicial, taxaFinal);
+    }
+
+    @GetMapping("/restaurantes/nomeAndCozinha")
+    public List<Restaurante> findByNomeAndCozinhaId(@RequestParam String nome,
+                                             @RequestParam Long cozinhaId){
+        return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
     }
 }
