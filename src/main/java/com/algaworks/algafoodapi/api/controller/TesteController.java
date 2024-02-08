@@ -64,4 +64,11 @@ public class TesteController {
     public int countByCozinhaId(@RequestParam Long id){
         return restauranteRepository.countByCozinhaId(id);
     }
+
+    @GetMapping("/restaurantes/getNomeBetweenTaxa")
+    public List<Restaurante> getRestaurantesByNomeAndTaxaFrete(@RequestParam String nome,
+                                                               @RequestParam BigDecimal taxaInicial,
+                                                               @RequestParam BigDecimal taxaFinal){
+        return restauranteRepository.consultar(nome,taxaInicial,taxaFinal);
+    }
 }
