@@ -42,4 +42,24 @@ public class TesteController {
                                              @RequestParam Long cozinhaId){
         return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
     }
+
+    @GetMapping("/restaurantes/findFirstNomeContaining")
+    public Optional<Restaurante> findByNomeFirst(@RequestParam String nome){
+        return restauranteRepository.findFirstByNomeContaining(nome);
+    }
+
+    @GetMapping("/restaurantes/findByNomeTop2")
+    public List<Restaurante> findByNomeTop2(@RequestParam String nome){
+        return restauranteRepository.findTop2ByNomeContaining(nome);
+    }
+
+    @GetMapping("/exists")
+    public boolean exists(@RequestParam String nome){
+        return cozinhaRepository.existsByNome(nome);
+    }
+
+    @GetMapping("/restaurantes/countCozinhaId")
+    public int countByCozinhaId(@RequestParam Long id){
+        return restauranteRepository.countByCozinhaId(id);
+    }
 }
