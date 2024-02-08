@@ -5,11 +5,13 @@ import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.awt.print.Pageable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +42,7 @@ public class TesteController {
     @GetMapping("/restaurantes/nomeAndCozinha")
     public List<Restaurante> findByNomeAndCozinhaId(@RequestParam String nome,
                                              @RequestParam Long cozinhaId){
-        return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
+        return restauranteRepository.consultarPorNome(nome, cozinhaId);
     }
 
     @GetMapping("/restaurantes/findFirstNomeContaining")
@@ -50,7 +52,7 @@ public class TesteController {
 
     @GetMapping("/restaurantes/findByNomeTop2")
     public List<Restaurante> findByNomeTop2(@RequestParam String nome){
-        return restauranteRepository.findTop2ByNomeContaining(nome);
+        return restauranteRepository.buscarTop2PorNome(nome, PageRequest.of(0,2));
     }
 
     @GetMapping("/exists")
