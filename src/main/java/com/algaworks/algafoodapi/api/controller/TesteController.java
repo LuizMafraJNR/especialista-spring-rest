@@ -66,9 +66,9 @@ public class TesteController {
     }
 
     @GetMapping("/restaurantes/getNomeBetweenTaxa")
-    public List<Restaurante> getRestaurantesByNomeAndTaxaFrete(String nome,
-                                                               BigDecimal taxaInicial,
-                                                               BigDecimal taxaFinal){
+    public List<Restaurante> getRestaurantesByNomeAndTaxaFrete(@RequestParam(defaultValue = "") String nome,
+                                                               @RequestParam(defaultValue = "") BigDecimal taxaInicial,
+                                                               @RequestParam(defaultValue = "") BigDecimal taxaFinal){
         return restauranteRepository.consultar(nome,taxaInicial,taxaFinal);
     }
 }
