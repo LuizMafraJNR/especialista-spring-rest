@@ -3,6 +3,7 @@ package com.algaworks.algafoodapi.infrastructure.repository;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepositoryQueries;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,7 +13,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
@@ -27,13 +30,18 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
         CriteriaQuery<Restaurante> criteriaQuery = criteriaBuilder.createQuery(Restaurante.class);
         Root<Restaurante> root = criteriaQuery.from(Restaurante.class);
 
-        Predicate nomePredicate = criteriaBuilder.like(root.get("nome"), "%"+nome+"%");
+        List<Predicate> predicates = new ArrayList<>();
 
-        Predicate taxaFreteInicialPredicate = criteriaBuilder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial);
-
-        Predicate taxaFreteFinalPredicate = criteriaBuilder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal);
-
-        criteriaQuery.where(nomePredicate,taxaFreteInicialPredicate,taxaFreteFinalPredicate);
+        if (StringUtils.hasLength(nome)) {
+            predicates.add(criteriaBuilder.like(root.get("nome"), "%" + nome + "%"));
+        }
+        if (Objects.nonNull(taxaFreteInicial)) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial));
+        }
+        if (Objects.nonNull(taxaFreteFinal)) {
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
+        }
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
         TypedQuery<Restaurante> query = entityManager.createQuery(criteriaQuery);
 
         return query.getResultList();
