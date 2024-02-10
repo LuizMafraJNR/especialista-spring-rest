@@ -1,7 +1,10 @@
 package com.algaworks.algafoodapi.infrastructure.repository;
 
 import com.algaworks.algafoodapi.domain.model.Restaurante;
+import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepositoryQueries;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -17,10 +20,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.algaworks.algafoodapi.infrastructure.repository.spec.RestauranteSpecifications.comFreteGratis;
+import static com.algaworks.algafoodapi.infrastructure.repository.spec.RestauranteSpecifications.comNomeSemelhante;
+
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    /*Para não dar erro de Bean Circular(essa IMPL já vai ser usado pelo repository por isso da dando erro)
+    * Utilizamos a anotação @Lazy para que ela seja instanciada só quando for necessario. (Preguiçoso).*/
+    @Lazy
+    private RestauranteRepository restauranteRepository;
 
     @Override
     public List<Restaurante> consultar(String nome, BigDecimal taxaFreteInicial,
@@ -76,5 +87,11 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 
         return query.getResultList();*/
 
+    }
+
+    @Override
+    public List<Restaurante> comFreteGratisPorNome(String nome) {
+        return restauranteRepository.findAll(comFreteGratis()
+                .and(comNomeSemelhante(nome)));
     }
 }

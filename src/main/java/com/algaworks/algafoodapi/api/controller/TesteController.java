@@ -76,6 +76,6 @@ public class TesteController {
     @GetMapping("/restaurantes/nomeEFreteGratis")
     public List<Restaurante> restaurantesComFreteGratis(@RequestParam(defaultValue = "") String nome){
 
-        return restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante(nome)));
+        return restauranteRepository.comFreteGratisPorNome(nome);
     }
 }
