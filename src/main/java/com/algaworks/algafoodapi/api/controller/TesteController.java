@@ -78,4 +78,10 @@ public class TesteController {
 
         return restauranteRepository.comFreteGratisPorNome(nome);
     }
+
+    @GetMapping("/restaurante/primeira")
+    public Optional<Restaurante> buscaPrimeira(){
+        Optional<Restaurante> restaurante = restauranteRepository.buscarPrimeiro();
+        return Optional.ofNullable(restaurante.get());
+    }
 }
