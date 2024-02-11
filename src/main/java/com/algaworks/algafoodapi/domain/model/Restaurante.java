@@ -2,6 +2,8 @@ package com.algaworks.algafoodapi.domain.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,7 +24,10 @@ public class Restaurante {
     @JsonIgnore
     @JoinColumn(name = "cozinha_codigo", nullable = false)
     private Cozinha cozinha;
-    @ManyToOne
-    @JoinColumn(name = "formaPagamento_id",nullable = false)
-    private FormaPagamento formaPagamento;
+    @ManyToMany
+    /*@JoinColumn(name = "formaPagamento_id",nullable = false)*/
+    @JoinTable(name = "restaurante_forma_pagamento",
+    joinColumns = @JoinColumn(name = "restaurante_id"),
+    inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+    private List<FormaPagamento> formasPagamento = new ArrayList<>();
 }
