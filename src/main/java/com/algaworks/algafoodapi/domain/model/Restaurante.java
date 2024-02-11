@@ -3,11 +3,13 @@ package com.algaworks.algafoodapi.domain.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tab_restaurante")
+/*@Table(name = "tab_restaurante")*/
 public class Restaurante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +19,7 @@ public class Restaurante {
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "cozinha_codigo", nullable = false)
     private Cozinha cozinha;
     @ManyToOne
