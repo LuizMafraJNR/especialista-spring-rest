@@ -21,7 +21,6 @@ public class Produto {
     private BigDecimal preco;
     @Column(nullable = false)
     private Boolean ativo;
-    @Column(nullable = false)
     @ManyToOne
     @JoinColumn(nullable = false)
     private Restaurante restaurante;

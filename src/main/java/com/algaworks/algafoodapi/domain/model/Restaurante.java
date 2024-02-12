@@ -42,4 +42,7 @@ public class Restaurante {
     @Column(nullable = false, columnDefinition = "datetime")
     @UpdateTimestamp // Anotação para que o hibernate preencha a data de atualização
     private LocalDateTime dataAtualizacao;
+    @OneToMany(mappedBy = "restaurante")
+    @JsonIgnore
+    private List<Produto> produtos = new ArrayList<>();
 }
