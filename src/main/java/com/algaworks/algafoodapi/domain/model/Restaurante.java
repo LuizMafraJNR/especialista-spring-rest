@@ -2,12 +2,15 @@ package com.algaworks.algafoodapi.domain.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
@@ -33,4 +36,10 @@ public class Restaurante {
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
     @Embedded
     private Endereco endereco;
+    @Column(nullable = false, columnDefinition = "datetime")
+    @CreationTimestamp // Anotação para que o hibernate preencha a data de cadastro
+    private LocalDateTime dataCadastro;
+    @Column(nullable = false, columnDefinition = "datetime")
+    @UpdateTimestamp // Anotação para que o hibernate preencha a data de atualização
+    private LocalDateTime dataAtualizacao;
 }
