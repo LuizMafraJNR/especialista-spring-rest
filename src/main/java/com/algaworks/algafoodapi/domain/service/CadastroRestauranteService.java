@@ -28,12 +28,12 @@ public class CadastroRestauranteService {
                 ));
         restaurante.setCozinha(cozinha);
 
-        Long formaPagamentoId = restaurante.getFormaPagamento().getId();
+       /* Long formaPagamentoId = restaurante.getFormaPagamento().getId();
         FormaPagamento formaPagamento = formaPagamentoRepository.findById(formaPagamentoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
                         String.format("Não foi encontrada a forma de pagamento com o Id %d",formaPagamentoId)
                 ));
-        restaurante.setFormaPagamento(formaPagamento);
+        restaurante.setFormaPagamento(formaPagamento);*/
 
         return restauranteRepository.save(restaurante);
     }

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tab_formPagamento")
+/*@Table(name = "tab_formPagamento")*/
 public class FormaPagamento
 {
 	@Id
