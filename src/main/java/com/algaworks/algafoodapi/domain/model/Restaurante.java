@@ -33,7 +33,7 @@ public class Restaurante {
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
-    @ManyToMany
+    @ManyToMany//(fetch = FetchType.EAGER) Não é muito comum mudar de Lazy para Eager, pois pode causar problemas de performance
     /*@JoinColumn(name = "formaPagamento_id",nullable = false)*/
     @JsonIgnore
     @JoinTable(name = "restaurante_forma_pagamento",
