@@ -35,7 +35,7 @@ public class Restaurante {
 
     @ManyToMany//(fetch = FetchType.EAGER) Não é muito comum mudar de Lazy para Eager, pois pode causar problemas de performance
     /*@JoinColumn(name = "formaPagamento_id",nullable = false)*/
-    @JsonIgnore
+    /*@JsonIgnore //Queremos usar as formas de pagamentos para resolver o problema do n+1 com fetch join*/
     @JoinTable(name = "restaurante_forma_pagamento",
     joinColumns = @JoinColumn(name = "restaurante_id"),
     inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
