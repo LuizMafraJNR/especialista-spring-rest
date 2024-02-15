@@ -30,7 +30,12 @@ public class RestauranteController {
     private CadastroRestauranteService restauranteService;
     @GetMapping()
     public List<Restaurante> listar(){
-        return restauranteRepository.findAll();
+        List<Restaurante> restaurantes = restauranteRepository.findAll();
+        // Testando o Lazy Loading
+        System.out.println("o nome da cozinha é:");
+        System.out.println(restaurantes.get(0).getCozinha().getNome());
+
+        return restaurantes;
     }
 
     @GetMapping("/{id}")
