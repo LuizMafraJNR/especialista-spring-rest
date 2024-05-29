@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/cozinhas")//Pode ser colocado aqui o produces tambem. Mas tem que passar o value para o request.
@@ -89,7 +90,14 @@ public class CozinhaController
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id){
-        cadastroCozinha.remover(id);
+        try
+        {
+            cadastroCozinha.remover(id);
+        }
+        catch (EntidadeNaoEncontradaException e)
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
 }
