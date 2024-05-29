@@ -2,9 +2,20 @@ package com.algaworks.algafoodapi.domain.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.server.ResponseStatusException;
 
-// @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Entidade não encontrada")
+@ResponseStatus(value = HttpStatus.NOT_FOUND)//, reason = "Entidade não encontrada")
+public class EntidadeNaoEncontradaException extends RuntimeException
+{
+    private static final long serialVersionUID = 1L;
+
+    public EntidadeNaoEncontradaException(String mensagem)
+    {
+        super(mensagem);
+
+    }
+}
+
+/*
 public class EntidadeNaoEncontradaException extends ResponseStatusException
 {
     private static final long serialVersionUID = 1L;
@@ -19,3 +30,4 @@ public class EntidadeNaoEncontradaException extends ResponseStatusException
         this(HttpStatus.NOT_FOUND, mensagem);
     }
 }
+*/

@@ -34,20 +34,16 @@ public class CozinhaController
 
     /*@ResponseStatus(value = HttpStatus.CREATED)  Só exemplo não usar.*/
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Cozinha> buscar(@PathVariable("id") Long id){
-        Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
+    public Cozinha buscar(@PathVariable("id") Long id){
+        return cadastroCozinha.buscarOuFalhar(id);
 
-        /*return ResponseEntity.status(HttpStatus.OK).body(cozinha);*/
-
+        /*aula 8.5
         if(cozinha.isPresent()){
-            /*return ResponseEntity.status(HttpStatus.NOT_FOUND).build();*/
+            *//*return ResponseEntity.status(HttpStatus.NOT_FOUND).build();*//*
             return ResponseEntity.ok(cozinha.get());
 
         }
-        return ResponseEntity.notFound().build();
-
-        // OR
-       /* return cozinha.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());*/
+        return ResponseEntity.notFound().build();*/
 
         /*HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.LOCATION, "http://localhost:8080/cozinhas");
@@ -62,15 +58,12 @@ public class CozinhaController
 
     //Atualizar com PUT
     @PutMapping("/{id}")
-    public ResponseEntity<Cozinha> atualizar(@PathVariable Long id,
+    public Cozinha atualizar(@PathVariable Long id,
                                              @RequestBody Cozinha cozinha){
-        Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(id);
-        if (cozinhaAtual.isPresent()){
-            BeanUtils.copyProperties(cozinha, cozinhaAtual.get(), "id");
-            Cozinha cozinhaSalva = cadastroCozinha.cadastrar(cozinhaAtual.get());
-            return ResponseEntity.ok(cozinhaSalva);
-        }
-        return ResponseEntity.notFound().build();
+        Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(id);
+
+        BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+        return cadastroCozinha.cadastrar(cozinhaAtual);
     }
 
     /*@DeleteMapping("/{id}")
