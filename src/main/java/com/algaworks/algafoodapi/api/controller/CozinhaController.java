@@ -87,17 +87,11 @@ public class CozinhaController
 
     // Em caso de sucesso no delete, o status é 204 No Content.
     // Anotar o ResponseStatus nas Exceptions.
+    // Possivel fazer com o try catch, mas depende de como tu for utilizar Aula 8.3
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id){
-        try
-        {
-            cadastroCozinha.remover(id);
-        }
-        catch (EntidadeNaoEncontradaException e)
-        {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        cadastroCozinha.remover(id);
     }
 
 }
