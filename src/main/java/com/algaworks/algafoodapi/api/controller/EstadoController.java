@@ -28,41 +28,27 @@ public class EstadoController {
         return estadoRepository.findAll();
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Estado> listarPorId(@PathVariable Long id){
-        Optional<Estado> estado = estadoRepository.findById(id);
-        if (estado.isPresent()){
-            return ResponseEntity.ok().body(estado.get());
-        }
-        return ResponseEntity.notFound().build();
+    public Estado listarPorId(@PathVariable Long id){
+        return estadoService.buscarOuFalhar(id);
     }
     @PostMapping()
-    public ResponseEntity<Estado> salvar(@RequestBody Estado estado){
-        estado = estadoService.salvar(estado);
-        return ResponseEntity.status(HttpStatus.CREATED).body(estado);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Estado salvar(@RequestBody Estado estado){
+       return estadoService.salvar(estado);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id,@RequestBody Estado estado){
-
-        Optional<Estado> estadoAtual = estadoRepository.findById(id);
-        if (estadoAtual.isPresent()) {
-            BeanUtils.copyProperties(estado, estadoAtual.get(), "id");
-            Estado estadoSalvo = estadoService.salvar(estadoAtual.get());
-            return ResponseEntity.ok(estadoSalvo);
-        }
-        return ResponseEntity.notFound().build();
+    public Estado atualizar(@PathVariable Long id,@RequestBody Estado estado)
+    {
+        Estado estadoAtual = estadoService.buscarOuFalhar(id);
+        BeanUtils.copyProperties(estado, estadoAtual, "id");
+        return estadoService.salvar(estadoAtual);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> remover(@PathVariable Long id){
-        try{
-            estadoService.remover(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntidadeNaoEncontradaException e){
-            return ResponseEntity.notFound().build();
-        } catch (EntidadeEmUsoException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long id){
+        estadoService.remover(id);
     }
 
 }

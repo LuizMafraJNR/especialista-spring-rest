@@ -11,10 +11,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CadastroEstadoService {
+    public static final String MSG_ESTADO_DE_ID_D_NÃO_ENCONTRADO = "Estado de id %d não encontrado";
+    public static final String MSG_ESTADO_VINCULADO_A_CIDADE = "Parece que esse estado de id %d está vinculada a uma cidade e" +
+            " não pode ser excluid";
     @Autowired
     private EstadoRepository estadoRepository;
     public Estado salvar(Estado estado){
         return estadoRepository.save(estado);
+    }
+
+    public Estado buscarOuFalhar(Long estadoId)
+    {
+        return estadoRepository.findById(estadoId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MSG_ESTADO_DE_ID_D_NÃO_ENCONTRADO, estadoId)
+                ));
     }
 
     public void remover(Long id){
@@ -22,13 +33,11 @@ public class CadastroEstadoService {
             estadoRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e){
             throw new EntidadeNaoEncontradaException(
-                    String.format("O estado de Id %d não foi encontrado e por isso não " +
-                            "pode ser removido", id)
+                    String.format(MSG_ESTADO_DE_ID_D_NÃO_ENCONTRADO, id)
             );
         } catch (DataIntegrityViolationException e){
             throw new EntidadeEmUsoException(
-                    String.format("Parece que esse estado de id %d está vinculada a uma cidade e" +
-                            " não pode ser excluid", id)
+                    String.format(MSG_ESTADO_VINCULADO_A_CIDADE, id)
             );
         }
     }

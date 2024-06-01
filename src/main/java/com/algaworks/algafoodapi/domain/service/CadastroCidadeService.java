@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CadastroCidadeService {
+    public static final String MSG_CIDADE_NAO_ENCONTRADA = "Cidade com o Id %d não foi encontrada";
+    public static final String MSG_CIDADE_ESTA_SENDO_UTILIZADA = "Cidade com id %d está sentod utilizada por outra entidade, por isso " +
+            "não pode ser removida";
+    public static final String MSG_ESTADO_NAO_ENCONTRADO = "Estado com o id %d não foi encontrado.";
     @Autowired
     private CidadeRepository cidadeRepository;
     @Autowired
@@ -22,11 +26,19 @@ public class CadastroCidadeService {
         Long estadoId = cidade.getEstado().getId();
         Estado estado = estadoRepository.findById(estadoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format("Estado com o id %d não foi encontrado.", estadoId)
+                        String.format(MSG_ESTADO_NAO_ENCONTRADO, estadoId)
                 ));
 
         cidade.setEstado(estado);
         return cidadeRepository.save(cidade);
+    }
+
+    public Cidade buscarOuFalhar(Long cidadeId)
+    {
+        return cidadeRepository.findById(cidadeId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId)
+                ));
     }
 
     public void remover(Long id){
@@ -34,12 +46,11 @@ public class CadastroCidadeService {
             cidadeRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e){
             throw new EntidadeNaoEncontradaException(
-                    String.format("Cidade com o Id %d não foi encontrada", id)
+                    String.format(MSG_CIDADE_NAO_ENCONTRADA, id)
             );
         } catch (DataIntegrityViolationException e){
             throw new EntidadeEmUsoException(
-                    String.format("Cidade com id %d está sentod utilizada por outra entidade, por isso " +
-                            "não pode ser removida", id)
+                    String.format(MSG_CIDADE_ESTA_SENDO_UTILIZADA, id)
             );
         }
     }

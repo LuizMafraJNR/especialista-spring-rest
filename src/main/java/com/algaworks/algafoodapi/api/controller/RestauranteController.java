@@ -30,62 +30,41 @@ public class RestauranteController {
     private CadastroRestauranteService restauranteService;
     @GetMapping()
     public List<Restaurante> listar(){
-        List<Restaurante> restaurantes = restauranteRepository.findAll();
+       return restauranteRepository.findAll();
         /*// Testando o Lazy Loading
         System.out.println("o nome da cozinha é:");
         System.out.println(restaurantes.get(0).getCozinha().getNome());
 */
-        return restaurantes;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Restaurante> buscar(@PathVariable Long id){
-        Optional<Restaurante> restaurante = restauranteRepository.findById(id);
-        if (restaurante.isPresent()){
-            return ResponseEntity.ok(restaurante.get());
-        }
-        return ResponseEntity.notFound().build();
+    public Restaurante buscar(@PathVariable Long id)
+    {
+        return restauranteService.buscarOuFalhar(id);
     }
 
     @PostMapping()
-    public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante) {
-        try {
-            restaurante = restauranteService.adicionar(restaurante);
-            return ResponseEntity.status(HttpStatus.CREATED).body(restaurante);
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @ResponseStatus(HttpStatus.CREATED)
+    public Restaurante adicionar(@RequestBody Restaurante restaurante)
+    {
+        return restauranteService.adicionar(restaurante);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id,@RequestBody Restaurante restaurante){
-        try {
-            Optional<Restaurante> restauranteAtual = restauranteRepository.findById(id);
-            if (restauranteAtual.isPresent()){
-                BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id",
-                        "formasPagamento", "endereco","dataCadastro", "produtos");
-                Restaurante restauranteSalvo = restauranteService.adicionar(restauranteAtual.get());
-                return ResponseEntity.ok(restauranteSalvo);
-            }
-
-            return ResponseEntity.notFound().build();
-
-        } catch (EntidadeNaoEncontradaException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public Restaurante atualizar(@PathVariable Long id,@RequestBody Restaurante restaurante)
+    {
+            Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
+            BeanUtils.copyProperties(restaurante, restauranteAtual, "id",
+                    "formasPagamento", "endereco","dataCadastro", "produtos");
+            return restauranteService.adicionar(restauranteAtual);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> atualizarParcial(@PathVariable Long id,
+    public Restaurante atualizarParcial(@PathVariable Long id,
                                               @RequestBody Map<String, Object> campos){
-        Optional<Restaurante> restauranteAtual = restauranteRepository.findById(id);
-        if (restauranteAtual.isPresent()){
-            merge(campos, restauranteAtual.get());
-
-            return atualizar(id, restauranteAtual.get());
-        }
-
-        return ResponseEntity.notFound().build();
+        Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
+        merge(campos, restauranteAtual);
+        return atualizar(id, restauranteAtual);
     }
 
     private void merge(Map<String, Object> camposOrigem, Restaurante restauranteAtual) {

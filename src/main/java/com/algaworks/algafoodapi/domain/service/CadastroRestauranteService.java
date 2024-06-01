@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.domain.service;
 
+import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.FormaPagamento;
@@ -8,23 +9,36 @@ import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import com.algaworks.algafoodapi.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
 public class CadastroRestauranteService {
+    public static final String MSG_NÃO_FOI_ENCONTRADO_UM_RESTAURANTE_COM_O_ID_D = "Não foi encontrado um restaurante com o ID %d";
+    public static final String MSG_NÃO_FOI_ENCONTRADO_UMA_COZINHA_COM_O_ID = "Não foi encontrado uma cozinha com o ID %d";
+    public static final String MSG_HÁ_UMA_RESTAURANTE_COM_UMA_COZINHA_EM_UTILIZAÇÃO = "Há uma restaurante com uma cozinha em utilização";
     @Autowired
     private RestauranteRepository restauranteRepository;
     @Autowired
     private CozinhaRepository cozinhaRepository;
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
+
+    public Restaurante buscarOuFalhar(Long id)
+    {
+        return restauranteRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(MSG_NÃO_FOI_ENCONTRADO_UM_RESTAURANTE_COM_O_ID_D, id)
+                ));
+    }
     public Restaurante adicionar(Restaurante restaurante){
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format("Não foi encontrado uma cozinha com o ID %d", cozinhaId)
+                        String.format(MSG_NÃO_FOI_ENCONTRADO_UMA_COZINHA_COM_O_ID, cozinhaId)
                 ));
         restaurante.setCozinha(cozinha);
 
@@ -36,5 +50,19 @@ public class CadastroRestauranteService {
         restaurante.setFormaPagamento(formaPagamento);*/
 
         return restauranteRepository.save(restaurante);
+    }
+
+    public void remover(Long id){
+        try {
+            restauranteRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e){
+            throw new EntidadeNaoEncontradaException(
+                    String.format(MSG_NÃO_FOI_ENCONTRADO_UM_RESTAURANTE_COM_O_ID_D, id)
+            );
+        } catch (DataIntegrityViolationException e){
+            throw new EntidadeEmUsoException(
+                    String.format(MSG_HÁ_UMA_RESTAURANTE_COM_UMA_COZINHA_EM_UTILIZAÇÃO, id)
+            );
+        }
     }
 }
