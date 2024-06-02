@@ -70,26 +70,4 @@ public class CidadeController {
     public void remover(@PathVariable Long id){
         cidadeService.remover(id);
     }
-
-    @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ResponseEntity<?> tratarEstadoNaoEncontradoException(EntidadeNaoEncontradaException e)
-    {
-        Problem problema = Problem.builder()
-            .dateTime(LocalDateTime.now())
-            .message(e.getMessage())
-            .build();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body(problema);
-    }
-
-    @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<?> tratarNegocioException(NegocioException e)
-    {
-        Problem problema = Problem.builder()
-            .dateTime(LocalDateTime.now())
-            .message(e.getMessage())
-            .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(problema);
-    }
 }
