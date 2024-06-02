@@ -2,6 +2,7 @@ package com.algaworks.algafoodapi.api.controller;
 
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
@@ -47,7 +48,15 @@ public class RestauranteController {
     @ResponseStatus(HttpStatus.CREATED)
     public Restaurante adicionar(@RequestBody Restaurante restaurante)
     {
-        return restauranteService.adicionar(restaurante);
+
+        try
+        {
+            return restauranteService.adicionar(restaurante);
+        }
+        catch (EntidadeNaoEncontradaException e)
+        {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -56,7 +65,15 @@ public class RestauranteController {
             Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
             BeanUtils.copyProperties(restaurante, restauranteAtual, "id",
                     "formasPagamento", "endereco","dataCadastro", "produtos");
+
+        try
+        {
             return restauranteService.adicionar(restauranteAtual);
+        }
+        catch (EntidadeNaoEncontradaException e)
+        {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PatchMapping("/{id}")
@@ -64,7 +81,14 @@ public class RestauranteController {
                                               @RequestBody Map<String, Object> campos){
         Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
         merge(campos, restauranteAtual);
-        return atualizar(id, restauranteAtual);
+        try
+        {
+            return atualizar(id, restauranteAtual);
+        }
+        catch (EntidadeNaoEncontradaException e)
+        {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     private void merge(Map<String, Object> camposOrigem, Restaurante restauranteAtual) {
