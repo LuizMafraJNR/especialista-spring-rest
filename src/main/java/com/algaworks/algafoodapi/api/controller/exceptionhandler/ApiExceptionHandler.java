@@ -19,21 +19,27 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 {
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
-	public ResponseEntity<?> tratarEstadoNaoEncontradoException(EntidadeNaoEncontradaException e, WebRequest request)
+	public ResponseEntity<?> handleEstadoNaoEncontradoException(EntidadeNaoEncontradaException e, WebRequest request)
 	{
-		return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+		Problem problem = createProblemBuilder(HttpStatus.NOT_FOUND, ProblemType.ENTIDADE_NAO_ENCONTRADA,
+			e.getMessage()).build();
+		return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 
 	@ExceptionHandler(EntidadeEmUsoException.class)
-	public ResponseEntity<?> tratarEntidadeEmUsoException(WebRequest request, EntidadeEmUsoException e)
+	public ResponseEntity<?> handleEntidadeEmUsoException(WebRequest request, EntidadeEmUsoException e)
 	{
-		return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
+		Problem problem = createProblemBuilder(HttpStatus.CONFLICT, ProblemType.ENTIDADE_EM_USO, e.getMessage())
+			.build();
+		return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.CONFLICT, request);
 	}
 
 	@ExceptionHandler(NegocioException.class)
-	public ResponseEntity<?> tratarNegocioException(NegocioException e, WebRequest request)
+	public ResponseEntity<?> handleNegocioException(NegocioException e, WebRequest request)
 	{
-	    return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+		Problem problem = createProblemBuilder(HttpStatus.BAD_REQUEST, ProblemType.ERRO_NEGOCIO, e.getMessage())
+			.build();
+	    return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 
 	@Override
@@ -43,16 +49,28 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 		if(Objects.isNull(body))
 		{
 			body = Problem.builder()
+				.status(status.value())
+				.title(status.getReasonPhrase())
 				.dateTime(LocalDateTime.now())
-				.message(status.getReasonPhrase())
 				.build();
 		} else if (body instanceof String)
 		{
 			body = Problem.builder()
+				.status(status.value())
+				.title((String) body)
 				.dateTime(LocalDateTime.now())
-				.message((String) body)
 				.build();
 		}
 		return super.handleExceptionInternal(ex, body, headers, status, request);
+	}
+
+	private Problem.ProblemBuilder createProblemBuilder(HttpStatus cause, ProblemType problemType, String detail)
+	{
+		return Problem.builder()
+			.status(cause.value())
+			.type(problemType.getUri())
+			.title(problemType.getTitle())
+			.detail(detail)
+			.dateTime(LocalDateTime.now());
 	}
 }
