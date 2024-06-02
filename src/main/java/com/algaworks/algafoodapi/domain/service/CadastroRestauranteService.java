@@ -2,6 +2,7 @@ package com.algaworks.algafoodapi.domain.service;
 
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafoodapi.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.FormaPagamento;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
@@ -32,11 +33,10 @@ public class CadastroRestauranteService {
     public Restaurante buscarOuFalhar(Long id)
     {
         return restauranteRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(MSG_NÃO_FOI_ENCONTRADO_UM_RESTAURANTE_COM_O_ID_D, id)
-                ));
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(
+                        id));
     }
-    public Restaurante adicionar(Restaurante restaurante){
+    public Restaurante adicionar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaService.buscarOuFalhar(cozinhaId);
         restaurante.setCozinha(cozinha);
@@ -55,9 +55,7 @@ public class CadastroRestauranteService {
         try {
             restauranteRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e){
-            throw new EntidadeNaoEncontradaException(
-                    String.format(MSG_NÃO_FOI_ENCONTRADO_UM_RESTAURANTE_COM_O_ID_D, id)
-            );
+            throw new RestauranteNaoEncontradoException(id);
         } catch (DataIntegrityViolationException e){
             throw new EntidadeEmUsoException(
                     String.format(MSG_HÁ_UMA_RESTAURANTE_COM_UMA_COZINHA_EM_UTILIZAÇÃO, id)

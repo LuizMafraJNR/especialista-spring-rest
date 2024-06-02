@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
@@ -53,7 +54,7 @@ public class RestauranteController {
         {
             return restauranteService.adicionar(restaurante);
         }
-        catch (EntidadeNaoEncontradaException e)
+        catch (CozinhaNaoEncontradaException e)
         {
             throw new NegocioException(e.getMessage());
         }
@@ -62,15 +63,14 @@ public class RestauranteController {
     @PutMapping("/{id}")
     public Restaurante atualizar(@PathVariable Long id,@RequestBody Restaurante restaurante)
     {
+        try
+        {
             Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
             BeanUtils.copyProperties(restaurante, restauranteAtual, "id",
                     "formasPagamento", "endereco","dataCadastro", "produtos");
-
-        try
-        {
             return restauranteService.adicionar(restauranteAtual);
         }
-        catch (EntidadeNaoEncontradaException e)
+        catch (CozinhaNaoEncontradaException e)
         {
             throw new NegocioException(e.getMessage());
         }
@@ -79,13 +79,14 @@ public class RestauranteController {
     @PatchMapping("/{id}")
     public Restaurante atualizarParcial(@PathVariable Long id,
                                               @RequestBody Map<String, Object> campos){
-        Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
-        merge(campos, restauranteAtual);
         try
         {
+        Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
+        merge(campos, restauranteAtual);
+
             return atualizar(id, restauranteAtual);
         }
-        catch (EntidadeNaoEncontradaException e)
+        catch (CozinhaNaoEncontradaException e)
         {
             throw new NegocioException(e.getMessage());
         }

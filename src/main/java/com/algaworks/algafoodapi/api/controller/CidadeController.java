@@ -2,6 +2,7 @@ package com.algaworks.algafoodapi.api.controller;
 
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafoodapi.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import com.algaworks.algafoodapi.domain.model.Cidade;
 import com.algaworks.algafoodapi.domain.repository.CidadeRepository;
@@ -39,7 +40,7 @@ public class CidadeController {
         {
             return cidadeService.salvar(cidade);
         }
-        catch (EntidadeNaoEncontradaException e)
+        catch (EstadoNaoEncontradoException e)
         {
             throw new NegocioException(e.getMessage());
         }
@@ -49,13 +50,14 @@ public class CidadeController {
     public Cidade atualizar(@PathVariable Long id,
                                        @RequestBody Cidade cidade)
     {
-        Cidade cidadeAtual = cidadeService.buscarOuFalhar(id);
-        BeanUtils.copyProperties(cidade, cidadeAtual, "id");
         try
         {
+            Cidade cidadeAtual = cidadeService.buscarOuFalhar(id);
+            BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+
             return cidadeService.salvar(cidadeAtual);
         }
-        catch (EntidadeNaoEncontradaException e)
+        catch (EstadoNaoEncontradoException e)
         {
             throw new NegocioException(e.getMessage());
         }
