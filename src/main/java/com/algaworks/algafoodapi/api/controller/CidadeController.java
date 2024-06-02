@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import com.algaworks.algafoodapi.api.controller.exceptionhandler.Problem;
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.EstadoNaoEncontradoException;
@@ -7,6 +8,7 @@ import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import com.algaworks.algafoodapi.domain.model.Cidade;
 import com.algaworks.algafoodapi.domain.repository.CidadeRepository;
 import com.algaworks.algafoodapi.domain.service.CadastroCidadeService;
+import java.time.LocalDateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,5 +69,27 @@ public class CidadeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id){
         cidadeService.remover(id);
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<?> tratarEstadoNaoEncontradoException(EntidadeNaoEncontradaException e)
+    {
+        Problem problema = Problem.builder()
+            .dateTime(LocalDateTime.now())
+            .message(e.getMessage())
+            .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(problema);
+    }
+
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<?> tratarNegocioException(NegocioException e)
+    {
+        Problem problema = Problem.builder()
+            .dateTime(LocalDateTime.now())
+            .message(e.getMessage())
+            .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(problema);
     }
 }
