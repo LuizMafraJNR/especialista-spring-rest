@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 {
 
+	// Trata erro na URI da requisição
 	@Override
 	protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
 		HttpStatus status, WebRequest request)
@@ -41,6 +42,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 		return super.handleTypeMismatch(ex, headers, status, request);
 	}
 
+	// Trata erro no corpo da requisição
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 		HttpHeaders headers, HttpStatus status, WebRequest request)
