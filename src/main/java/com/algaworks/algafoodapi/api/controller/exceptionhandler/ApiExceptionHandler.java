@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 // RFC 7807 PROBLEM DETAILS HTTP APIs
@@ -28,6 +29,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 {
+
+	@Override
+	protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex,
+		HttpHeaders headers, HttpStatus status, WebRequest request)
+	{
+		ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
+		String detail = String.format("O recurso %s, que você tentou acessar, é inexistente", ex.getRequestURL());
+
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
+
+		return handleExceptionInternal(ex, problem, headers, status, request);
+	}
 
 	// Trata erro na URI da requisição
 	@Override
@@ -119,7 +132,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
 	public ResponseEntity<?> handleEstadoNaoEncontradoException(EntidadeNaoEncontradaException e, WebRequest request)
 	{
-		Problem problem = createProblemBuilder(HttpStatus.NOT_FOUND, ProblemType.ENTIDADE_NAO_ENCONTRADA,
+		Problem problem = createProblemBuilder(HttpStatus.NOT_FOUND, ProblemType.RECURSO_NAO_ENCONTRADO,
 			e.getMessage()).build();
 		return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
