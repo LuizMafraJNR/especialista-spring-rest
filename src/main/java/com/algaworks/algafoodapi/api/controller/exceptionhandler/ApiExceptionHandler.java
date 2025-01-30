@@ -40,7 +40,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 		ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
 		String detail = String.format("O recurso %s, que você tentou acessar, é inexistente", ex.getRequestURL());
 
-		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail)
+			.userMessage(detail)
+			.build();
 
 		return handleExceptionInternal(ex, problem, headers, status, request);
 	}
@@ -191,6 +193,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 				.status(status.value())
 				.title(status.getReasonPhrase())
 				.dateTime(LocalDateTime.now())
+				.userMessage(MSG_ERRO_GENERICO_USER_FINAL)
 				.build();
 		} else if (body instanceof String)
 		{
@@ -198,6 +201,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 				.status(status.value())
 				.title((String) body)
 				.dateTime(LocalDateTime.now())
+				.userMessage(MSG_ERRO_GENERICO_USER_FINAL)
 				.build();
 		}
 		return super.handleExceptionInternal(ex, body, headers, status, request);
