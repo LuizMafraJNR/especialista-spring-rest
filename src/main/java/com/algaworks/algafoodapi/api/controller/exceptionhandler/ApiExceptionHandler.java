@@ -6,6 +6,7 @@ import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +30,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 {
+
+	public static final String MSG_ERRO_GENERICO_USER_FINAL = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
 
 	@Override
 	protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex,
@@ -96,7 +99,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 		ProblemType problemType = ProblemType.ERRO_DO_SISTEMA;
 
-		String detail = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
+		String detail = MSG_ERRO_GENERICO_USER_FINAL;
 		ex.printStackTrace();
 		Problem problem = createProblemBuilder(status, problemType, detail).build();
 
@@ -111,6 +114,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 		Problem problem = createProblemBuilder(status, problemType, detail).build();
 
 		return handleExceptionInternal(rootCause, problem, new HttpHeaders(), status, request);
+	}
+	private ResponseEntity<Object> handlePropertyBinding(PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request)
+	{
+		String path = joinPath(ex.getPath());
+		ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
+		String detail = String.format("A propriedade '%s' não existe. Corrija ou remova-a para continuar", path);
+		Problem problem = createProblemBuilder(status, problemType, detail)
+			.userMessage(MSG_ERRO_GENERICO_USER_FINAL)
+			.build();
+
+		return handleExceptionInternal(ex, problem, headers, status, request);
 	}
 
 	private ResponseEntity<Object> handlePropertyIgnored(IgnoredPropertyException rootCause, HttpHeaders headers, HttpStatus status, WebRequest request)
@@ -137,7 +151,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 		String detail = String.format("A propriedade '%s' recebeu o valor '%s' que é de um tipo inválido."
 			+ " Corrija e informe um valor compatível com o tipo %s",path,rootCause.getValue(), rootCause.getTargetType().getSimpleName());
 
-		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail)
+			.userMessage(MSG_ERRO_GENERICO_USER_FINAL).build();
 
 		return  handleExceptionInternal(rootCause, problem, headers, status, request);
 	}
