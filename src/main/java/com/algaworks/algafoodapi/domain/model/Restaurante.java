@@ -9,6 +9,8 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,6 +24,7 @@ public class Restaurante {
     private Long id;
 
     @Column(nullable = false)
+    @NotNull
     private String nome;
 
     @Column(name = "taxa_frete", nullable = false)
