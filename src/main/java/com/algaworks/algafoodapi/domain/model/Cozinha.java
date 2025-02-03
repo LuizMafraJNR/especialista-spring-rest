@@ -2,6 +2,8 @@ package com.algaworks.algafoodapi.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,6 +18,7 @@ public class Cozinha {
     @Id
     //@JsonIgnore //Não mostrar o id na resposta
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private Long id;
 
     /*@JsonProperty("titulo") //Mudar o nome do atributo na resposta*/
