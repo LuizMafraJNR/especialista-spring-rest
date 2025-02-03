@@ -26,7 +26,7 @@ public class Restaurante {
 
     @Column(nullable = false)
 //    @NotNull
-    @NotBlank
+    @NotBlank(message = "Nome é obrigatório e não pode ser vazio")
     private String nome;
 
     //@DecimalMin("0")
