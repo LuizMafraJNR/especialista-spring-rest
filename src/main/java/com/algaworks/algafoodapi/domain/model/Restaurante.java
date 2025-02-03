@@ -6,12 +6,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -26,18 +26,19 @@ public class Restaurante {
 
     @Column(nullable = false)
 //    @NotNull
-    @NotBlank(groups = Groups.CadastroRestaurante.class)
+    @NotBlank
     private String nome;
 
     //@DecimalMin("0")
-    @PositiveOrZero(groups = Groups.CadastroRestaurante.class)
+    @PositiveOrZero
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
     @ManyToOne//(fetch = FetchType.LAZY) // Carrega a cozinha apenas quando for acessada
     // @JsonIgnore
    /* @JsonIgnoreProperties(value = "hibernateLazyInitializer") // Ignora a propriedade hibernateLazyInitializer*/
-    @NotNull(groups = Groups.CadastroRestaurante.class)
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+    @NotNull
     @JoinColumn(name = "cozinha_id", nullable = false)
     @Valid
     private Cozinha cozinha;
