@@ -1,6 +1,6 @@
 package com.algaworks.algafoodapi.domain.model;
 
-import com.algaworks.algafoodapi.Groups;
+import com.algaworks.algafoodapi.api.controller.Groups;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

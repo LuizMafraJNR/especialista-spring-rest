@@ -60,7 +60,7 @@ public class CozinhaController
     //Atualizar com PUT
     @PutMapping("/{id}")
     public Cozinha atualizar(@PathVariable Long id,
-                                             @RequestBody Cozinha cozinha){
+                                             @Valid @RequestBody Cozinha cozinha){
         Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(id);
 
         BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
