@@ -5,6 +5,7 @@ import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import com.algaworks.algafoodapi.domain.service.CadastroCozinhaService;
+import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,7 +53,7 @@ public class CozinhaController
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cozinha adicionar(@RequestBody Cozinha cozinha){
+    public Cozinha adicionar(@Valid @RequestBody Cozinha cozinha){
         return cadastroCozinha.cadastrar(cozinha);
     }
 

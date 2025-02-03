@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.domain.model;
 
+import com.algaworks.algafoodapi.Groups;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,18 +26,20 @@ public class Restaurante {
 
     @Column(nullable = false)
 //    @NotNull
-    @NotBlank
+    @NotBlank(groups = Groups.CadastroRestaurante.class)
     private String nome;
 
     //@DecimalMin("0")
-    @PositiveOrZero
+    @PositiveOrZero(groups = Groups.CadastroRestaurante.class)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
     @ManyToOne//(fetch = FetchType.LAZY) // Carrega a cozinha apenas quando for acessada
     // @JsonIgnore
    /* @JsonIgnoreProperties(value = "hibernateLazyInitializer") // Ignora a propriedade hibernateLazyInitializer*/
+    @NotNull(groups = Groups.CadastroRestaurante.class)
     @JoinColumn(name = "cozinha_id", nullable = false)
+    @Valid
     private Cozinha cozinha;
 
     @ManyToMany//(fetch = FetchType.EAGER) Não é muito comum mudar de Lazy para Eager, pois pode causar problemas de performance

@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.domain.model;
 
+import com.algaworks.algafoodapi.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import javax.validation.constraints.NotBlank;
@@ -18,11 +19,12 @@ public class Cozinha {
     @Id
     //@JsonIgnore //Não mostrar o id na resposta
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
+    @NotNull(groups = Groups.CadastroRestaurante.class)
     private Long id;
 
     /*@JsonProperty("titulo") //Mudar o nome do atributo na resposta*/
     @Column(nullable = false)
+    @NotBlank
     private String nome;
 
     @JsonIgnore
