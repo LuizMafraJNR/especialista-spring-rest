@@ -1,6 +1,7 @@
 package com.algaworks.algafoodapi.domain.model;
 
 import com.algaworks.algafoodapi.core.validation.Groups;
+import com.algaworks.algafoodapi.core.validation.Multiplo;
 import com.algaworks.algafoodapi.core.validation.TaxaFrete;
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -34,6 +35,7 @@ public class Restaurante {
     //@PositiveOrZero
     @TaxaFrete
         //(message = "{TaxaFrete.invalida}")
+    @Multiplo(numero = 5)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
