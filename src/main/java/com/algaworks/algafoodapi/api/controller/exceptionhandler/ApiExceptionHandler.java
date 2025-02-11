@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.api.controller.exceptionhandler;
 
+import com.algaworks.algafoodapi.core.validation.ValidacaoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
@@ -62,34 +63,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 		HttpHeaders headers, HttpStatus status, WebRequest request)
 	{
-		String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
-
-		BindingResult bindingResult = ex.getBindingResult();
-
-		List<Problem.Object> problemObjects = bindingResult.getAllErrors()
-			.stream()
-			.map(objectError -> {
-				String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
-				String name = objectError.getObjectName();
-
-				if (objectError instanceof FieldError)
-				{
-					name = ((FieldError) objectError).getField();
-				}
-
-				return Problem.Object.builder()
-					.name(name)
-					.userMessage(message)
-					.build();
-			})
-			.collect(Collectors.toList());
-
-		Problem problem = createProblemBuilder(status, ProblemType.DADOS_INVALIDOS, detail)
-			.userMessage(detail)
-			.objects(problemObjects)
-			.build();
-
-		return super.handleExceptionInternal(ex, problem, headers, status, request);
+		return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request);
 	}
 
 	@Override
@@ -190,6 +164,36 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 			.collect(Collectors.joining("."));
 	}
 
+	private ResponseEntity<Object> handleValidationInternal(Exception ex, BindingResult bindingResult, HttpHeaders headers, HttpStatus status, WebRequest request)
+	{
+		String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
+
+		List<Problem.Object> problemObjects = bindingResult.getAllErrors()
+			.stream()
+			.map(objectError -> {
+				String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+				String name = objectError.getObjectName();
+
+				if (objectError instanceof FieldError)
+				{
+					name = ((FieldError) objectError).getField();
+				}
+
+				return Problem.Object.builder()
+					.name(name)
+					.userMessage(message)
+					.build();
+			})
+			.collect(Collectors.toList());
+
+		Problem problem = createProblemBuilder(status, ProblemType.DADOS_INVALIDOS, detail)
+			.userMessage(detail)
+			.objects(problemObjects)
+			.build();
+
+		return super.handleExceptionInternal(ex, problem, headers, status, request);
+	}
+
 	private ResponseEntity<Object> handleInvalidFormat(InvalidFormatException rootCause, HttpHeaders headers, HttpStatus status, WebRequest request)
 	{
 		String path = joinPath(rootCause.getPath());
@@ -217,6 +221,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 		Problem problem = createProblemBuilder(HttpStatus.CONFLICT, ProblemType.ENTIDADE_EM_USO, e.getMessage())
 			.build();
 		return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.CONFLICT, request);
+	}
+
+	@ExceptionHandler(ValidacaoException.class)
+	public ResponseEntity<Object> handleValidacaoException(ValidacaoException ex, WebRequest request)
+	{
+		return handleValidationInternal(ex, ex.getBindingResult(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 
 	@ExceptionHandler(NegocioException.class)
