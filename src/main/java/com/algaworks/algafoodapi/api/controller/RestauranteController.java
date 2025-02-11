@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import com.algaworks.algafoodapi.core.validation.ValidacaoException;
 import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
@@ -16,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
@@ -30,6 +33,10 @@ public class RestauranteController {
     private RestauranteRepository restauranteRepository;
     @Autowired
     private CadastroRestauranteService restauranteService;
+	@Autowired
+	private SmartValidator validator;
+
+
     @GetMapping()
     public List<Restaurante> listar(){
        return restauranteRepository.findAll();
@@ -83,6 +90,7 @@ public class RestauranteController {
         {
         Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
         merge(campos, restauranteAtual, request);
+		validate(restauranteAtual,"restaurante");
 
             return atualizar(id, restauranteAtual);
         }
@@ -92,7 +100,17 @@ public class RestauranteController {
         }
     }
 
-    private void merge(Map<String, Object> camposOrigem, Restaurante restauranteAtual,
+	private void validate(Restaurante restauranteAtual, String objectName)
+	{
+		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restauranteAtual, objectName);
+		validator.validate(restauranteAtual, bindingResult);
+		if (bindingResult.hasErrors())
+		{
+			throw new ValidacaoException(bindingResult);
+		}
+	}
+
+	private void merge(Map<String, Object> camposOrigem, Restaurante restauranteAtual,
         HttpServletRequest request) {
 
         ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
