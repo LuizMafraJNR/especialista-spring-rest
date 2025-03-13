@@ -1,18 +1,26 @@
 package com.algaworks.algafoodapi.domain.model;
 
+import com.algaworks.algafoodapi.core.validation.Groups;
+import com.algaworks.algafoodapi.core.validation.Multiplo;
+import com.algaworks.algafoodapi.core.validation.TaxaFrete;
+import com.algaworks.algafoodapi.core.validation.ValorZeroIncluiDescricao;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+@ValorZeroIncluiDescricao(valorField = "taxaFrete",
+    descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @Entity
 /*@Table(name = "tab_restaurante")*/
@@ -22,15 +30,25 @@ public class Restaurante {
     private Long id;
 
     @Column(nullable = false)
+//    @NotNull
+    @NotBlank
     private String nome;
 
+    //@DecimalMin("0")
+    //@PositiveOrZero
+    @TaxaFrete
+        //(message = "{TaxaFrete.invalida}")
+    @Multiplo(numero = 5)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Carrega a cozinha apenas quando for acessada
-    @JsonIgnore
+    @ManyToOne//(fetch = FetchType.LAZY) // Carrega a cozinha apenas quando for acessada
+    // @JsonIgnore
    /* @JsonIgnoreProperties(value = "hibernateLazyInitializer") // Ignora a propriedade hibernateLazyInitializer*/
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+    @NotNull
     @JoinColumn(name = "cozinha_id", nullable = false)
+    @Valid
     private Cozinha cozinha;
 
     @ManyToMany//(fetch = FetchType.EAGER) Não é muito comum mudar de Lazy para Eager, pois pode causar problemas de performance

@@ -9,6 +9,7 @@ import com.algaworks.algafoodapi.domain.model.Cidade;
 import com.algaworks.algafoodapi.domain.repository.CidadeRepository;
 import com.algaworks.algafoodapi.domain.service.CadastroCidadeService;
 import java.time.LocalDateTime;
+import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class CidadeController {
     }
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Cidade adicionar(@RequestBody Cidade cidade){
+    public Cidade adicionar(@Valid @RequestBody Cidade cidade){
         try
         {
             return cidadeService.salvar(cidade);
@@ -50,7 +51,7 @@ public class CidadeController {
 
     @PutMapping("/{id}")
     public Cidade atualizar(@PathVariable Long id,
-                                       @RequestBody Cidade cidade)
+                                       @Valid @RequestBody Cidade cidade)
     {
         try
         {
