@@ -4,16 +4,14 @@ import com.algaworks.algafoodapi.core.validation.Groups;
 import com.algaworks.algafoodapi.core.validation.Multiplo;
 import com.algaworks.algafoodapi.core.validation.TaxaFrete;
 import com.algaworks.algafoodapi.core.validation.ValorZeroIncluiDescricao;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import lombok.Data;
@@ -50,7 +48,6 @@ public class Restaurante {
     @NotNull
     @JoinColumn(name = "cozinha_id", nullable = false)
     @Valid
-    @JsonIgnoreProperties(value = "nome", allowGetters = true)
     private Cozinha cozinha;
 
     @ManyToMany//(fetch = FetchType.EAGER) Não é muito comum mudar de Lazy para Eager, pois pode causar problemas de performance
@@ -62,20 +59,16 @@ public class Restaurante {
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
     @Embedded
-    @JsonIgnore
     private Endereco endereco;
 
     @Column(nullable = false, columnDefinition = "datetime")
-    @JsonIgnore
     @CreationTimestamp // Anotação para que o hibernate preencha a data de cadastro
     private LocalDateTime dataCadastro;
 
     @Column(nullable = false, columnDefinition = "datetime")
     @UpdateTimestamp // Anotação para que o hibernate preencha a data de atualização
-    @JsonIgnore
     private LocalDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "restaurante")
-    @JsonIgnore
     private List<Produto> produtos = new ArrayList<>();
 }
