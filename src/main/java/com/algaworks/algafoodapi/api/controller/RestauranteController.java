@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import com.algaworks.algafoodapi.api.model.RestauranteDTO;
 import com.algaworks.algafoodapi.core.validation.ValidacaoException;
 import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
@@ -47,9 +48,11 @@ public class RestauranteController {
     }
 
     @GetMapping("/{id}")
-    public Restaurante buscar(@PathVariable Long id)
+    public RestauranteDTO buscar(@PathVariable Long id)
     {
-        return restauranteService.buscarOuFalhar(id);
+		Restaurante restaurante = restauranteService.buscarOuFalhar(id);
+        RestauranteDTO restauranteDTO = null;
+		return restauranteDTO; // conversão da entidade Restaurante para RestauranteDTO
     }
 
     @PostMapping()
