@@ -5,7 +5,7 @@ import com.algaworks.algafoodapi.core.validation.Multiplo;
 import com.algaworks.algafoodapi.core.validation.TaxaFrete;
 import com.algaworks.algafoodapi.core.validation.ValorZeroIncluiDescricao;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -63,11 +63,11 @@ public class Restaurante {
 
     @Column(nullable = false, columnDefinition = "datetime")
     @CreationTimestamp // Anotação para que o hibernate preencha a data de cadastro
-    private LocalDateTime dataCadastro;
+    private OffsetDateTime dataCadastro;
 
     @Column(nullable = false, columnDefinition = "datetime")
     @UpdateTimestamp // Anotação para que o hibernate preencha a data de atualização
-    private LocalDateTime dataAtualizacao;
+    private OffsetDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
