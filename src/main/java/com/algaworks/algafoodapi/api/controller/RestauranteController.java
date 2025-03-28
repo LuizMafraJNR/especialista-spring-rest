@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import com.algaworks.algafoodapi.api.assembler.RestauranteDTOAssembler;
 import com.algaworks.algafoodapi.api.model.CozinhaDTO;
 import com.algaworks.algafoodapi.api.model.RestauranteDTO;
 import com.algaworks.algafoodapi.api.model.input.RestaurantInput;
@@ -40,11 +41,13 @@ public class RestauranteController {
     private CadastroRestauranteService restauranteService;
 	@Autowired
 	private SmartValidator validator;
+	@Autowired
+	private RestauranteDTOAssembler restauranteDTOAssembler;
 
 
     @GetMapping()
     public List<RestauranteDTO> listar(){
-       return toCollectDto(restauranteRepository.findAll());
+       return restauranteDTOAssembler.toCollectDto(restauranteRepository.findAll());
         /*// Testando o Lazy Loading
         System.out.println("o nome da cozinha é:");
         System.out.println(restaurantes.get(0).getCozinha().getNome());
@@ -55,7 +58,7 @@ public class RestauranteController {
     public RestauranteDTO buscar(@PathVariable Long id)
     {
 		Restaurante restaurante = restauranteService.buscarOuFalhar(id);
-	    RestauranteDTO restauranteDTO = toRestauranteDTO(restaurante);
+	    RestauranteDTO restauranteDTO = restauranteDTOAssembler.toRestauranteDTO(restaurante);
 	    return restauranteDTO; // conversão da entidade Restaurante para RestauranteDTO
     }
 
@@ -67,7 +70,7 @@ public class RestauranteController {
         try
         {
 			Restaurante restaurante1 = toRestaurante(restaurante);
-            return toRestauranteDTO(restauranteService.adicionar(restaurante1));
+            return restauranteDTOAssembler.toRestauranteDTO(restauranteService.adicionar(restaurante1));
         }
         catch (CozinhaNaoEncontradaException e)
         {
@@ -85,7 +88,7 @@ public class RestauranteController {
             Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
             BeanUtils.copyProperties(restaurante, restauranteAtual, "id",
                     "formasPagamento", "endereco","dataCadastro", "produtos");
-            return toRestauranteDTO(restauranteService.adicionar(restauranteAtual));
+            return restauranteDTOAssembler.toRestauranteDTO(restauranteService.adicionar(restauranteAtual));
         }
         catch (CozinhaNaoEncontradaException e)
         {
@@ -152,27 +155,6 @@ public class RestauranteController {
             throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
 	    }
     }
-
-	private static RestauranteDTO toRestauranteDTO(Restaurante restaurante)
-	{
-		RestauranteDTO restauranteDTO = new RestauranteDTO();
-		restauranteDTO.setId(restaurante.getId());
-		restauranteDTO.setNome(restaurante.getNome());
-		restauranteDTO.setTaxaFrete(restaurante.getTaxaFrete());
-
-		CozinhaDTO cozinhaDTO = new CozinhaDTO();
-		cozinhaDTO.setId(restaurante.getCozinha().getId());
-		cozinhaDTO.setNome(restaurante.getCozinha().getNome());
-		restauranteDTO.setCozinha(cozinhaDTO);
-		return restauranteDTO;
-	}
-
-	private List<RestauranteDTO> toCollectDto(List<Restaurante> restaurantes)
-	{
-		return restaurantes.stream()
-				.map(RestauranteController::toRestauranteDTO)
-				.collect(Collectors.toList());
-	}
 
 	private Restaurante toRestaurante(RestaurantInput restaurantInput)
 	{
