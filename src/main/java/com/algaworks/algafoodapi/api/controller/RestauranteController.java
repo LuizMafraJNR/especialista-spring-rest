@@ -2,9 +2,11 @@ package com.algaworks.algafoodapi.api.controller;
 
 import com.algaworks.algafoodapi.api.model.CozinhaDTO;
 import com.algaworks.algafoodapi.api.model.RestauranteDTO;
+import com.algaworks.algafoodapi.api.model.input.RestaurantInput;
 import com.algaworks.algafoodapi.core.validation.ValidacaoException;
 import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
+import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
 import com.algaworks.algafoodapi.domain.service.CadastroRestauranteService;
@@ -59,12 +61,13 @@ public class RestauranteController {
 
 	@PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public RestauranteDTO adicionar(@RequestBody  @Valid Restaurante restaurante)
+    public RestauranteDTO adicionar(@RequestBody  @Valid RestaurantInput restaurante)
     {
 
         try
         {
-            return toRestauranteDTO(restauranteService.adicionar(restaurante));
+			Restaurante restaurante1 = toRestaurante(restaurante);
+            return toRestauranteDTO(restauranteService.adicionar(restaurante1));
         }
         catch (CozinhaNaoEncontradaException e)
         {
@@ -73,10 +76,12 @@ public class RestauranteController {
     }
 
     @PutMapping("/{id}")
-    public RestauranteDTO atualizar(@PathVariable Long id, @Valid @RequestBody Restaurante restaurante)
+    public RestauranteDTO atualizar(@PathVariable Long id, @Valid @RequestBody RestaurantInput restauranteInput)
     {
         try
         {
+			Restaurante restaurante = toRestaurante(restauranteInput);
+
             Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
             BeanUtils.copyProperties(restaurante, restauranteAtual, "id",
                     "formasPagamento", "endereco","dataCadastro", "produtos");
@@ -167,5 +172,18 @@ public class RestauranteController {
 		return restaurantes.stream()
 				.map(RestauranteController::toRestauranteDTO)
 				.collect(Collectors.toList());
+	}
+
+	private Restaurante toRestaurante(RestaurantInput restaurantInput)
+	{
+		Restaurante restaurante = new Restaurante();
+		Cozinha cozinha = new Cozinha();
+
+		cozinha.setId(restaurantInput.getCozinha().getId());
+		restaurante.setNome(restaurantInput.getNome());
+		restaurante.setTaxaFrete(restaurantInput.getTaxaFrete());
+		restaurante.setCozinha(cozinha);
+
+		return restaurante;
 	}
 }

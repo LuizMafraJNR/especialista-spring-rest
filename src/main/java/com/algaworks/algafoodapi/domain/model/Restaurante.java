@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import lombok.Data;
@@ -30,24 +31,24 @@ public class Restaurante {
 
     @Column(nullable = false)
 //    @NotNull
-    @NotBlank
+    //@NotBlank
     private String nome;
 
     //@DecimalMin("0")
     //@PositiveOrZero
-    @TaxaFrete
+    //@TaxaFrete
         //(message = "{TaxaFrete.invalida}")
-    @Multiplo(numero = 5)
+    //@Multiplo(numero = 5)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
     @ManyToOne//(fetch = FetchType.LAZY) // Carrega a cozinha apenas quando for acessada
     // @JsonIgnore
    /* @JsonIgnoreProperties(value = "hibernateLazyInitializer") // Ignora a propriedade hibernateLazyInitializer*/
-    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
-    @NotNull
+    //@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+   // @NotNull
     @JoinColumn(name = "cozinha_id", nullable = false)
-    @Valid
+    //@Valid
     private Cozinha cozinha;
 
     @ManyToMany//(fetch = FetchType.EAGER) Não é muito comum mudar de Lazy para Eager, pois pode causar problemas de performance

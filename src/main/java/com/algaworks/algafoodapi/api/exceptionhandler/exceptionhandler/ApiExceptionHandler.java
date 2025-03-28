@@ -1,4 +1,4 @@
-package com.algaworks.algafoodapi.api.controller.exceptionhandler;
+package com.algaworks.algafoodapi.api.exceptionhandler.exceptionhandler;
 
 import com.algaworks.algafoodapi.core.validation.ValidacaoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;

@@ -1,8 +1,8 @@
 package com.algaworks.algafoodapi.core.jackson;
 
-import com.algaworks.algafoodapi.api.controller.model.mixin.CidadeMixin;
-import com.algaworks.algafoodapi.api.controller.model.mixin.CozinhaMixin;
-import com.algaworks.algafoodapi.api.controller.model.mixin.RestauranteMixin;
+import com.algaworks.algafoodapi.api.model.mixin.CidadeMixin;
+import com.algaworks.algafoodapi.api.model.mixin.CozinhaMixin;
+import com.algaworks.algafoodapi.api.model.mixin.RestauranteMixin;
 import com.algaworks.algafoodapi.domain.model.Cidade;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Restaurante;

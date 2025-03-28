@@ -1,4 +1,4 @@
-package com.algaworks.algafoodapi.api.controller.model.mixin;
+package com.algaworks.algafoodapi.api.model.mixin;
 
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Endereco;

@@ -19,7 +19,7 @@ public class Cozinha {
     @Id
     //@JsonIgnore //Não mostrar o id na resposta
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = Groups.CozinhaId.class)
+   // @NotNull(groups = Groups.CozinhaId.class)
     private Long id;
 
     /*@JsonProperty("titulo") //Mudar o nome do atributo na resposta*/

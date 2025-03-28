@@ -1,4 +1,4 @@
-package com.algaworks.algafoodapi.api.controller.exceptionhandler;
+package com.algaworks.algafoodapi.api.exceptionhandler.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.OffsetDateTime;
