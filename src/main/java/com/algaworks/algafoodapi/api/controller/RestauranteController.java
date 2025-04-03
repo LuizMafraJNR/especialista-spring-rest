@@ -1,6 +1,7 @@
 package com.algaworks.algafoodapi.api.controller;
 
 import com.algaworks.algafoodapi.api.assembler.RestauranteDTOAssembler;
+import com.algaworks.algafoodapi.api.assembler.RestauranteDTODisassembler;
 import com.algaworks.algafoodapi.api.model.CozinhaDTO;
 import com.algaworks.algafoodapi.api.model.RestauranteDTO;
 import com.algaworks.algafoodapi.api.model.input.RestaurantInput;
@@ -43,6 +44,8 @@ public class RestauranteController {
 	private SmartValidator validator;
 	@Autowired
 	private RestauranteDTOAssembler restauranteDTOAssembler;
+	@Autowired
+	private RestauranteDTODisassembler restauranteDTODisassembler;
 
 
     @GetMapping()
@@ -69,7 +72,7 @@ public class RestauranteController {
 
         try
         {
-			Restaurante restaurante1 = toRestaurante(restaurante);
+			Restaurante restaurante1 = restauranteDTODisassembler.toRestaurante(restaurante);
             return restauranteDTOAssembler.toRestauranteDTO(restauranteService.adicionar(restaurante1));
         }
         catch (CozinhaNaoEncontradaException e)
@@ -83,7 +86,7 @@ public class RestauranteController {
     {
         try
         {
-			Restaurante restaurante = toRestaurante(restauranteInput);
+			Restaurante restaurante = restauranteDTODisassembler.toRestaurante(restauranteInput);
 
             Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
             BeanUtils.copyProperties(restaurante, restauranteAtual, "id",
@@ -155,17 +158,4 @@ public class RestauranteController {
             throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
 	    }
     }
-
-	private Restaurante toRestaurante(RestaurantInput restaurantInput)
-	{
-		Restaurante restaurante = new Restaurante();
-		Cozinha cozinha = new Cozinha();
-
-		cozinha.setId(restaurantInput.getCozinha().getId());
-		restaurante.setNome(restaurantInput.getNome());
-		restaurante.setTaxaFrete(restaurantInput.getTaxaFrete());
-		restaurante.setCozinha(cozinha);
-
-		return restaurante;
-	}
 }
