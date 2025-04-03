@@ -6,14 +6,20 @@ import com.algaworks.algafoodapi.api.model.RestauranteDTO;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RestauranteDTOAssembler
 {
-	public static RestauranteDTO toRestauranteDTO(Restaurante restaurante)
+	@Autowired
+	private ModelMapper modelMapper;
+
+	public RestauranteDTO toRestauranteDTO(Restaurante restaurante)
 	{
-		RestauranteDTO restauranteDTO = new RestauranteDTO();
+		return modelMapper.map(restaurante, RestauranteDTO.class);
+		/*RestauranteDTO restauranteDTO = new RestauranteDTO();
 		restauranteDTO.setId(restaurante.getId());
 		restauranteDTO.setNome(restaurante.getNome());
 		restauranteDTO.setTaxaFrete(restaurante.getTaxaFrete());
@@ -22,13 +28,13 @@ public class RestauranteDTOAssembler
 		cozinhaDTO.setId(restaurante.getCozinha().getId());
 		cozinhaDTO.setNome(restaurante.getCozinha().getNome());
 		restauranteDTO.setCozinha(cozinhaDTO);
-		return restauranteDTO;
+		return restauranteDTO;*/
 	}
 
 	public List<RestauranteDTO> toCollectDto(List<Restaurante> restaurantes)
 	{
 		return restaurantes.stream()
-			.map(RestauranteDTOAssembler::toRestauranteDTO)
+			.map(this::toRestauranteDTO)
 			.collect(Collectors.toList());
 	}
 }
