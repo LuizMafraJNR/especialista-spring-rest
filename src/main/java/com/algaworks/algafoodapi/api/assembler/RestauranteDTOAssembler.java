@@ -19,16 +19,6 @@ public class RestauranteDTOAssembler
 	public RestauranteDTO toRestauranteDTO(Restaurante restaurante)
 	{
 		return modelMapper.map(restaurante, RestauranteDTO.class);
-		/*RestauranteDTO restauranteDTO = new RestauranteDTO();
-		restauranteDTO.setId(restaurante.getId());
-		restauranteDTO.setNome(restaurante.getNome());
-		restauranteDTO.setTaxaFrete(restaurante.getTaxaFrete());
-
-		CozinhaDTO cozinhaDTO = new CozinhaDTO();
-		cozinhaDTO.setId(restaurante.getCozinha().getId());
-		cozinhaDTO.setNome(restaurante.getCozinha().getNome());
-		restauranteDTO.setCozinha(cozinhaDTO);
-		return restauranteDTO;*/
 	}
 
 	public List<RestauranteDTO> toCollectDto(List<Restaurante> restaurantes)

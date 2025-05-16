@@ -10,20 +10,7 @@ public class RestauranteDTO
 {
 	private Long id;
 	private String nome;
-	private BigDecimal taxaFrete;
+	private BigDecimal frete;
 	private CozinhaDTO cozinha;
-
-	/*
-	*{
-	* "id": 1,
-	* "nome": "Thai Gourmet",
-	* "taxaFrete": 10.00,
-	* "cozinha": {
-	*   "id": 1,
-	*   "nome": "Tailandesa"
-	* }
-	*
-	*
-	* */
 
 }
