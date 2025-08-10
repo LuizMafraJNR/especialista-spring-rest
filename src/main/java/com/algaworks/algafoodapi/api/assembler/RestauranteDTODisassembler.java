@@ -16,4 +16,9 @@ public class RestauranteDTODisassembler
 	{
 		return modelMapper.map(restaurantInput, Restaurante.class);
 	}
+
+
+	public void copyToDomainObject(RestaurantInput restaurantInput, Restaurante restaurante) {
+		modelMapper.map(restaurantInput, restaurante);
+	}
 }
