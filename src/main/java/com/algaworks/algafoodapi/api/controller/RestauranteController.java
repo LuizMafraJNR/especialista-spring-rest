@@ -1,24 +1,20 @@
 package com.algaworks.algafoodapi.api.controller;
 
-import com.algaworks.algafoodapi.api.assembler.RestauranteDTOAssembler;
-import com.algaworks.algafoodapi.api.assembler.RestauranteDTODisassembler;
-import com.algaworks.algafoodapi.api.model.CozinhaDTO;
-import com.algaworks.algafoodapi.api.model.RestauranteDTO;
+import com.algaworks.algafoodapi.api.assembler.restaurante.RestauranteDTOAssembler;
+import com.algaworks.algafoodapi.api.assembler.restaurante.RestauranteDTODisassembler;
+import com.algaworks.algafoodapi.api.model.RestauranteOutput;
 import com.algaworks.algafoodapi.api.model.input.RestaurantInput;
 import com.algaworks.algafoodapi.core.validation.ValidacaoException;
 import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
-import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
 import com.algaworks.algafoodapi.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -49,7 +45,7 @@ public class RestauranteController {
 
 
     @GetMapping()
-    public List<RestauranteDTO> listar(){
+    public List<RestauranteOutput> listar(){
        return restauranteDTOAssembler.toCollectDto(restauranteRepository.findAll());
         /*// Testando o Lazy Loading
         System.out.println("o nome da cozinha é:");
@@ -58,16 +54,16 @@ public class RestauranteController {
     }
 
     @GetMapping("/{id}")
-    public RestauranteDTO buscar(@PathVariable Long id)
+    public RestauranteOutput buscar(@PathVariable Long id)
     {
 		Restaurante restaurante = restauranteService.buscarOuFalhar(id);
-	    RestauranteDTO restauranteDTO = restauranteDTOAssembler.toRestauranteDTO(restaurante);
-	    return restauranteDTO; // conversão da entidade Restaurante para RestauranteDTO
+	    RestauranteOutput restauranteOutput = restauranteDTOAssembler.toRestauranteDTO(restaurante);
+	    return restauranteOutput; // conversão da entidade Restaurante para RestauranteDTO
     }
 
 	@PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public RestauranteDTO adicionar(@RequestBody  @Valid RestaurantInput restaurante)
+    public RestauranteOutput adicionar(@RequestBody  @Valid RestaurantInput restaurante)
     {
 
         try
@@ -82,7 +78,7 @@ public class RestauranteController {
     }
 
     @PutMapping("/{id}")
-    public RestauranteDTO atualizar(@PathVariable Long id, @Valid @RequestBody RestaurantInput restauranteInput)
+    public RestauranteOutput atualizar(@PathVariable Long id, @Valid @RequestBody RestaurantInput restauranteInput)
     {
         try
         {

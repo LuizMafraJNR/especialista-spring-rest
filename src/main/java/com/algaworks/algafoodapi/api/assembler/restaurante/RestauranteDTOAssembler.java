@@ -1,8 +1,6 @@
-package com.algaworks.algafoodapi.api.assembler;
+package com.algaworks.algafoodapi.api.assembler.restaurante;
 
-import com.algaworks.algafoodapi.api.controller.RestauranteController;
-import com.algaworks.algafoodapi.api.model.CozinhaDTO;
-import com.algaworks.algafoodapi.api.model.RestauranteDTO;
+import com.algaworks.algafoodapi.api.model.RestauranteOutput;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,12 +14,12 @@ public class RestauranteDTOAssembler
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public RestauranteDTO toRestauranteDTO(Restaurante restaurante)
+	public RestauranteOutput toRestauranteDTO(Restaurante restaurante)
 	{
-		return modelMapper.map(restaurante, RestauranteDTO.class);
+		return modelMapper.map(restaurante, RestauranteOutput.class);
 	}
 
-	public List<RestauranteDTO> toCollectDto(List<Restaurante> restaurantes)
+	public List<RestauranteOutput> toCollectDto(List<Restaurante> restaurantes)
 	{
 		return restaurantes.stream()
 			.map(this::toRestauranteDTO)
