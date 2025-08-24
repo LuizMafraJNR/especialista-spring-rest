@@ -1,6 +1,7 @@
 package com.algaworks.algafoodapi.api.assembler;
 
 import com.algaworks.algafoodapi.api.model.input.RestaurantInput;
+import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class RestauranteDTODisassembler
 
 
 	public void copyToDomainObject(RestaurantInput restaurantInput, Restaurante restaurante) {
+		// Para evitar identifier of an instance of com.algaworks.algafoodapi.domain.model.Cozinha was altered from 2 to 1
+		restaurante.setCozinha(new Cozinha());
 		modelMapper.map(restaurantInput, restaurante);
 	}
 }

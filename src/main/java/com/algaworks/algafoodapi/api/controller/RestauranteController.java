@@ -86,7 +86,7 @@ public class RestauranteController {
     {
         try
         {
-			Restaurante restaurante = restauranteDTODisassembler.toRestaurante(restauranteInput);
+			// Restaurante restaurante = restauranteDTODisassembler.toRestaurante(restauranteInput);
 
             Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
             restauranteDTODisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
