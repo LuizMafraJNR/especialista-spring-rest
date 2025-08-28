@@ -2,13 +2,13 @@ package com.algaworks.algafoodapi.domain.service;
 
 import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroCozinhaService {
@@ -17,13 +17,16 @@ public class CadastroCozinhaService {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
+    @Transactional
     public Cozinha cadastrar(Cozinha cozinha){
         return cozinhaRepository.save(cozinha);
     }
 
+    @Transactional
     public void remover(Long id){
         try {
             cozinhaRepository.deleteById(id);
+            cozinhaRepository.flush();
         } catch (EmptyResultDataAccessException e){
             throw new CozinhaNaoEncontradaException(id);
         } catch (DataIntegrityViolationException e){
