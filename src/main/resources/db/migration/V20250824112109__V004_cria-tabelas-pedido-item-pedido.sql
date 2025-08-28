@@ -23,7 +23,6 @@ create table pedido (
 
                         primary key (id),
 
-                        constraint fk_pedido_endereco_cidade foreign key (endereco_cidade_id) references cidade (id),
                         constraint fk_pedido_restaurante foreign key (restaurante_id) references restaurante (id),
                         constraint fk_pedido_usuario_cliente foreign key (usuario_cliente_id) references usuario (id),
                         constraint fk_pedido_forma_pagamento foreign key (forma_pagamento_id) references forma_pagamento (id)

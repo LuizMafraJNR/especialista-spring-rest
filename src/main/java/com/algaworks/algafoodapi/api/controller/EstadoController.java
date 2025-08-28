@@ -1,5 +1,9 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import com.algaworks.algafoodapi.api.assembler.estado.EstadoDTOAssembler;
+import com.algaworks.algafoodapi.api.assembler.estado.EstadoDTODisassembler;
+import com.algaworks.algafoodapi.api.model.EstadoOutput;
+import com.algaworks.algafoodapi.api.model.input.EstadoInput;
 import com.algaworks.algafoodapi.domain.model.Estado;
 import com.algaworks.algafoodapi.domain.repository.EstadoRepository;
 import com.algaworks.algafoodapi.domain.service.CadastroEstadoService;
@@ -18,28 +22,41 @@ public class EstadoController {
     private EstadoRepository estadoRepository;
     @Autowired
     private CadastroEstadoService estadoService;
+    @Autowired
+    private EstadoDTOAssembler estadoDTOAssembler;
+    @Autowired
+    private EstadoDTODisassembler estadoDTODisassembler;
+
     @GetMapping
-    public List<Estado> listar(){
-        return estadoRepository.findAll();
+    public List<EstadoOutput> listar(){
+        return estadoDTOAssembler.toCollectEstadoOutput(
+            estadoRepository.findAll()
+        );
     }
 
     @GetMapping("/{id}")
-    public Estado listarPorId(@PathVariable Long id){
-        return estadoService.buscarOuFalhar(id);
+    public EstadoOutput listarPorId(@PathVariable Long id){
+        return estadoDTOAssembler.toEstadoOutput(
+            estadoService.buscarOuFalhar(id)
+        );
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Estado salvar(@Valid @RequestBody Estado estado){
-       return estadoService.salvar(estado);
+    public EstadoOutput salvar(@Valid @RequestBody Estado estado){
+       return estadoDTOAssembler.toEstadoOutput(
+           estadoService.salvar(estado)
+       );
     }
 
     @PutMapping("/{id}")
-    public Estado atualizar(@PathVariable Long id,@Valid @RequestBody Estado estado)
+    public EstadoOutput atualizar(@PathVariable Long id,@Valid @RequestBody EstadoInput estado)
     {
         Estado estadoAtual = estadoService.buscarOuFalhar(id);
-        BeanUtils.copyProperties(estado, estadoAtual, "id");
-        return estadoService.salvar(estadoAtual);
+        estadoDTODisassembler.copyToDomainObject(estado, estadoAtual);
+        return estadoDTOAssembler.toEstadoOutput(
+            estadoService.salvar(estadoAtual)
+        );
     }
 
     @DeleteMapping("/{id}")

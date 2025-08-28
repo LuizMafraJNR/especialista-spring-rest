@@ -1,4 +1,4 @@
-package com.algaworks.algafoodapi.api.controller.exceptionhandler;
+package com.algaworks.algafoodapi.api.exceptionhandler.exceptionhandler;
 
 import com.algaworks.algafoodapi.core.validation.ValidacaoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -246,7 +246,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 			body = Problem.builder()
 				.status(status.value())
 				.title(status.getReasonPhrase())
-				.dateTime(LocalDateTime.now())
+				.dateTime(OffsetDateTime.now())
 				.userMessage(MSG_ERRO_GENERICO_USER_FINAL)
 				.build();
 		} else if (body instanceof String)
@@ -254,7 +254,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 			body = Problem.builder()
 				.status(status.value())
 				.title((String) body)
-				.dateTime(LocalDateTime.now())
+				.dateTime(OffsetDateTime.now())
 				.userMessage(MSG_ERRO_GENERICO_USER_FINAL)
 				.build();
 		}
@@ -268,6 +268,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler
 			.type(problemType.getUri())
 			.title(problemType.getTitle())
 			.detail(detail)
-			.dateTime(LocalDateTime.now());
+			.dateTime(OffsetDateTime.now());
 	}
 }

@@ -1,7 +1,7 @@
-package com.algaworks.algafoodapi.api.controller.exceptionhandler;
+package com.algaworks.algafoodapi.api.exceptionhandler.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +17,7 @@ public class Problem
 	private String title;
 	private String detail;
 	private String userMessage;
-	private LocalDateTime dateTime;
+	private OffsetDateTime dateTime;
 	private List<Object> objects;
 
 	@Getter

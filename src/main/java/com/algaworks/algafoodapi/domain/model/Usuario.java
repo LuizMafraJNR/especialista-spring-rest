@@ -1,13 +1,12 @@
 package com.algaworks.algafoodapi.domain.model;
 
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -25,7 +24,7 @@ public class Usuario {
     private String senha;
     @Column(nullable = false, columnDefinition = "datetime")
     @CreationTimestamp
-    private LocalDateTime dataCadastro;
+    private OffsetDateTime dataCadastro;
     @ManyToMany
     @JoinTable(name = "usuario_grupo",
     joinColumns = @JoinColumn(name = "usuario_id"),

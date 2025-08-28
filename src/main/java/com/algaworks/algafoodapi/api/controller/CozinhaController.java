@@ -1,5 +1,9 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import com.algaworks.algafoodapi.api.assembler.cozinha.CozinhaDTOAssembler;
+import com.algaworks.algafoodapi.api.assembler.cozinha.CozinhaDTODisassembler;
+import com.algaworks.algafoodapi.api.model.CozinhaOutput;
+import com.algaworks.algafoodapi.api.model.input.CozinhaInput;
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
@@ -23,20 +27,23 @@ public class CozinhaController
 {
     @Autowired
     private CozinhaRepository cozinhaRepository;
-
     @Autowired
     private CadastroCozinhaService cadastroCozinha;
+    @Autowired
+    private CozinhaDTOAssembler cozinhaDTOAssembler;
+    @Autowired
+    private CozinhaDTODisassembler cozinhaDTODisassembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     // Não precisa de "{}" se tiver apenas 1 MediaType.
-    public List<Cozinha> listar() {
-        return cozinhaRepository.findAll();
+    public List<CozinhaOutput> listar() {
+        return cozinhaDTOAssembler.toCollectCozinhaOutput(cozinhaRepository.findAll());
     }
 
     /*@ResponseStatus(value = HttpStatus.CREATED)  Só exemplo não usar.*/
     @GetMapping(value = "/{id}")
-    public Cozinha buscar(@PathVariable("id") Long id){
-        return cadastroCozinha.buscarOuFalhar(id);
+    public CozinhaOutput buscar(@PathVariable("id") Long id){
+        return cozinhaDTOAssembler.toCozinhaOutput(cadastroCozinha.buscarOuFalhar(id));
 
         /*aula 8.5
         if(cozinha.isPresent()){
@@ -53,18 +60,18 @@ public class CozinhaController
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cozinha adicionar(@Valid @RequestBody Cozinha cozinha){
-        return cadastroCozinha.cadastrar(cozinha);
+    public CozinhaOutput adicionar(@Valid @RequestBody CozinhaInput cozinha){
+        Cozinha cozinhaConvertida = cozinhaDTODisassembler.toCozinha(cozinha);
+        return cozinhaDTOAssembler.toCozinhaOutput(cadastroCozinha.cadastrar(cozinhaConvertida));
     }
 
     //Atualizar com PUT
     @PutMapping("/{id}")
-    public Cozinha atualizar(@PathVariable Long id,
-                                             @Valid @RequestBody Cozinha cozinha){
+    public CozinhaOutput atualizar(@PathVariable Long id,
+                                             @Valid @RequestBody CozinhaInput cozinha){
         Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(id);
-
-        BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
-        return cadastroCozinha.cadastrar(cozinhaAtual);
+        cozinhaDTODisassembler.copyToDomainObject(cozinha, cozinhaAtual);
+        return cozinhaDTOAssembler.toCozinhaOutput(cadastroCozinha.cadastrar(cozinhaAtual));
     }
 
     /*@DeleteMapping("/{id}")
