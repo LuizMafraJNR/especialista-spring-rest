@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroCidadeService {
@@ -37,9 +38,11 @@ public class CadastroCidadeService {
                 .orElseThrow(() -> new CidadeNaoEncontradoException(cidadeId));
     }
 
+    @Transactional
     public void remover(Long id){
         try{
             cidadeRepository.deleteById(id);
+            cidadeRepository.flush();
         } catch (EmptyResultDataAccessException e){
             throw new CidadeNaoEncontradoException(id);
         } catch (DataIntegrityViolationException e){
