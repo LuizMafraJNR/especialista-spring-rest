@@ -30,25 +30,25 @@ public class Restaurante {
     private Long id;
 
     @Column(nullable = false)
-//    @NotNull
-    //@NotBlank
+//    @NotNull  USANDO NO DTO, ESQUEÇE AQUI
+    //@NotBlank  USANDO NO DTO, ESQUEÇE AQUI
     private String nome;
 
-    //@DecimalMin("0")
-    //@PositiveOrZero
-    //@TaxaFrete
-        //(message = "{TaxaFrete.invalida}")
-    //@Multiplo(numero = 5)
+    //@DecimalMin("0")  USANDO NO DTO, ESQUEÇE AQUI
+    //@PositiveOrZero   USANDO NO DTO, ESQUEÇE AQUI
+    //@TaxaFrete    USANDO NO DTO, ESQUEÇE AQUI
+        //(message = "{TaxaFrete.invalida}")     USANDO NO DTO, ESQUEÇE AQUI
+    //@Multiplo(numero = 5) USANDO NO DTO, ESQUEÇE AQUI
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-    @ManyToOne//(fetch = FetchType.LAZY) // Carrega a cozinha apenas quando for acessada
-    // @JsonIgnore
-   /* @JsonIgnoreProperties(value = "hibernateLazyInitializer") // Ignora a propriedade hibernateLazyInitializer*/
-    //@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
-   // @NotNull
+    @ManyToOne//(fetch = FetchType.LAZY) // Carrega a cozinha apenas quando for acessada USANDO NO DTO, ESQUEÇE AQUI
+    // @JsonIgnore  USANDO NO DTO, ESQUEÇE AQUI
+   /* @JsonIgnoreProperties(value = "hibernateLazyInitializer") // Ignora a propriedade hibernateLazyInitializer USANDO NO DTO, ESQUEÇE AQUI*/
+    //@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)  USANDO NO DTO, ESQUEÇE AQUI
+   // @NotNull   USANDO NO DTO, ESQUEÇE AQUI
     @JoinColumn(name = "cozinha_id", nullable = false)
-    //@Valid
+    //@Valid    USANDO NO DTO, ESQUEÇE AQUI
     private Cozinha cozinha;
 
     @ManyToMany//(fetch = FetchType.EAGER) Não é muito comum mudar de Lazy para Eager, pois pode causar problemas de performance
@@ -72,4 +72,15 @@ public class Restaurante {
 
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
+
+    private Boolean ativo = Boolean.TRUE;
+
+    public void ativar() {
+        setAtivo(true);
+    }
+
+    public void inativar()
+    {
+        setAtivo(false);
+    }
 }

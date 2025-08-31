@@ -42,9 +42,11 @@ public class RestauranteController {
 	private RestauranteDTOAssembler restauranteDTOAssembler;
 	@Autowired
 	private RestauranteDTODisassembler restauranteDTODisassembler;
+	@Autowired
+	private CadastroRestauranteService cadastroRestauranteService;
 
 
-    @GetMapping()
+	@GetMapping()
     public List<RestauranteOutput> listar(){
        return restauranteDTOAssembler.toCollectDto(restauranteRepository.findAll());
         /*// Testando o Lazy Loading
@@ -117,7 +119,7 @@ public class RestauranteController {
         }
     }*/
 
-	private void validate(Restaurante restauranteAtual, String objectName)
+	/*private void validate(Restaurante restauranteAtual, String objectName)
 	{
 		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restauranteAtual, objectName);
 		validator.validate(restauranteAtual, bindingResult);
@@ -152,5 +154,20 @@ public class RestauranteController {
 		    Throwable rootCause = ExceptionUtils.getRootCause(e);
             throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
 	    }
-    }
+    }*/
+
+	// PUT /restaurantes/{id}/ativo
+	// DELETE /restaurantes/{id}/ativo
+
+	@PutMapping("/{restauranteId}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativar(@PathVariable Long restauranteId) {
+		cadastroRestauranteService.ativar(restauranteId);
+	}
+
+	@DeleteMapping("/{restauranteId}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inativar(@PathVariable Long restauranteId) {
+		cadastroRestauranteService.inativar(restauranteId);
+	}
 }

@@ -26,7 +26,7 @@ public interface RestauranteRepository extends
     * os dados do restaurante vão se repetir para cada forma de pagamento. O problema é que isto está se refletindo na aplicação,
     * o que na aula foi explicado que seria resolvido pelo hibernate, mas não está ocorrendo.
     * */
-    @Query("select distinct r from Restaurante r join r.cozinha join fetch r.formasPagamento")
+    @Query("select distinct r from Restaurante r join r.cozinha left join fetch r.formasPagamento")
     List<Restaurante> findAll();
 
     List<Restaurante> getRestauranteByTaxaFreteBetween(BigDecimal valorInicial,
