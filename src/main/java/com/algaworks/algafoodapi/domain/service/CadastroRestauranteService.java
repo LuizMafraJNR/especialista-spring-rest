@@ -3,6 +3,7 @@ package com.algaworks.algafoodapi.domain.service;
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.RestauranteNaoEncontradoException;
+import com.algaworks.algafoodapi.domain.model.Cidade;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.FormaPagamento;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
@@ -30,6 +31,10 @@ public class CadastroRestauranteService {
     private CadastroCozinhaService cozinhaService;
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
+    @Autowired
+    private CadastroCidadeService cidadeService;
+	@Autowired
+	private CadastroCidadeService cadastroCidadeService;
 
     public Restaurante buscarOuFalhar(Long id)
     {
@@ -41,8 +46,11 @@ public class CadastroRestauranteService {
     @Transactional
     public Restaurante adicionar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
+
         Cozinha cozinha = cozinhaService.buscarOuFalhar(cozinhaId);
+        Cidade cidade =  cadastroCidadeService.buscarOuFalhar(restaurante.getEndereco().getCidade().getId());
         restaurante.setCozinha(cozinha);
+        restaurante.getEndereco().setCidade(cidade);
 
        /* Long formaPagamentoId = restaurante.getFormaPagamento().getId();
         FormaPagamento formaPagamento = formaPagamentoRepository.findById(formaPagamentoId)

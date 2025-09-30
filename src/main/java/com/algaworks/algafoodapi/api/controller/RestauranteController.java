@@ -5,6 +5,7 @@ import com.algaworks.algafoodapi.api.assembler.restaurante.RestauranteDTODisasse
 import com.algaworks.algafoodapi.api.model.RestauranteOutput;
 import com.algaworks.algafoodapi.api.model.input.RestaurantInput;
 import com.algaworks.algafoodapi.core.validation.ValidacaoException;
+import com.algaworks.algafoodapi.domain.exception.CidadeNaoEncontradoException;
 import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
@@ -30,12 +31,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/restaurantes")
-public class RestauranteController {
+public class RestauranteController
+{
 
-    @Autowired
-    private RestauranteRepository restauranteRepository;
-    @Autowired
-    private CadastroRestauranteService restauranteService;
+	@Autowired
+	private RestauranteRepository restauranteRepository;
+	@Autowired
+	private CadastroRestauranteService restauranteService;
 	@Autowired
 	private SmartValidator validator;
 	@Autowired
@@ -47,60 +49,63 @@ public class RestauranteController {
 
 
 	@GetMapping()
-    public List<RestauranteOutput> listar(){
-       return restauranteDTOAssembler.toCollectDto(restauranteRepository.findAll());
+	public List<RestauranteOutput> listar()
+	{
+		return restauranteDTOAssembler.toCollectDto(restauranteRepository.findAll());
         /*// Testando o Lazy Loading
         System.out.println("o nome da cozinha é:");
         System.out.println(restaurantes.get(0).getCozinha().getNome());
 */
-    }
+	}
 
-    @GetMapping("/{id}")
-    public RestauranteOutput buscar(@PathVariable Long id)
-    {
+	@GetMapping("/{id}")
+	public RestauranteOutput buscar(@PathVariable Long id)
+	{
 		Restaurante restaurante = restauranteService.buscarOuFalhar(id);
-	    RestauranteOutput restauranteOutput = restauranteDTOAssembler.toRestauranteDTO(restaurante);
-	    return restauranteOutput; // conversão da entidade Restaurante para RestauranteDTO
-    }
+		RestauranteOutput restauranteOutput = restauranteDTOAssembler.toRestauranteDTO(restaurante);
+		return restauranteOutput; // conversão da entidade Restaurante para RestauranteDTO
+	}
 
 	@PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public RestauranteOutput adicionar(@RequestBody  @Valid RestaurantInput restaurante)
-    {
+	@ResponseStatus(HttpStatus.CREATED)
+	public RestauranteOutput adicionar(@RequestBody @Valid RestaurantInput restaurante)
+	{
 
-        try
-        {
+		try
+		{
 			Restaurante restaurante1 = restauranteDTODisassembler.toRestaurante(restaurante);
-            return restauranteDTOAssembler.toRestauranteDTO(restauranteService.adicionar(restaurante1));
-        }
-        catch (CozinhaNaoEncontradaException e)
-        {
-            throw new NegocioException(e.getMessage());
-        }
-    }
+			return restauranteDTOAssembler.toRestauranteDTO(restauranteService.adicionar(restaurante1));
+		}
+		catch (CozinhaNaoEncontradaException | CidadeNaoEncontradoException e)
+		{
+			throw new NegocioException(e.getMessage());
+		}
+	}
 
-    @PutMapping("/{id}")
-    public RestauranteOutput atualizar(@PathVariable Long id, @Valid @RequestBody RestaurantInput restauranteInput)
-    {
-        try
-        {
+	@PutMapping("/{id}")
+	public RestauranteOutput atualizar(@PathVariable Long id,
+		@Valid @RequestBody RestaurantInput restauranteInput)
+	{
+		try
+		{
 			// Restaurante restaurante = restauranteDTODisassembler.toRestaurante(restauranteInput);
 
-            Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
-            restauranteDTODisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
-            return restauranteDTOAssembler.toRestauranteDTO(restauranteService.adicionar(restauranteAtual));
-        }
-        catch (CozinhaNaoEncontradaException e)
-        {
-            throw new NegocioException(e.getMessage());
-        }
-    }
+			Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
+			restauranteDTODisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
+			return restauranteDTOAssembler.toRestauranteDTO(
+				restauranteService.adicionar(restauranteAtual));
+		}
+		catch (CozinhaNaoEncontradaException | CidadeNaoEncontradoException e)
+		{
+			throw new NegocioException(e.getMessage());
+		}
+	}
 
 	/*
-	*
-	* Para a proxima aula 11.11
-	*
-	* */
+	 *
+	 * Para a proxima aula 11.11
+	 *
+	 * */
 
     /*@PatchMapping("/{id}")
     public Restaurante atualizarParcial(@PathVariable Long id,
@@ -161,13 +166,15 @@ public class RestauranteController {
 
 	@PutMapping("/{restauranteId}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void ativar(@PathVariable Long restauranteId) {
+	public void ativar(@PathVariable Long restauranteId)
+	{
 		cadastroRestauranteService.ativar(restauranteId);
 	}
 
 	@DeleteMapping("/{restauranteId}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void inativar(@PathVariable Long restauranteId) {
+	public void inativar(@PathVariable Long restauranteId)
+	{
 		cadastroRestauranteService.inativar(restauranteId);
 	}
 }
