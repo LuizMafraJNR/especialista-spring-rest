@@ -4,6 +4,8 @@ import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import com.algaworks.algafoodapi.domain.exception.UsuarioNaoEncontradoException;
 import com.algaworks.algafoodapi.domain.model.Usuario;
 import com.algaworks.algafoodapi.domain.repository.UsuarioRepository;
+import java.util.Optional;
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +28,22 @@ public class UsuarioService
 	@Transactional
 	public Usuario salvar(Usuario usuario)
 	{
-		//return usuarioRepository.save(usuario);
-		return usuario;
+		/*
+		Esse aqui é importante, pois ele "desanexa" a entidade do contexto de persistência
+		Assim, quando fazemos a busca pelo email, não estamos buscando a própria entidade que estamos tentando salvar
+		Se não fizermos isso, a verificação de existência de email pode falhar, pois a entidade já está no contexto de persistência
+		Se o email for o mesmo da própria entidade, ele vai considerar que não há duplicidade
+		*/
+		usuarioRepository.detach(usuario);
+		Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+
+		if (usuarioExistente.isPresent() && usuarioExistente.get().equals(usuario))
+		{
+			throw new NegocioException(
+					String.format("Já existe um usuário cadastrado com o e-mail %s", usuario.getEmail()));
+		}
+
+		return usuarioRepository.save(usuario);
 	}
 
 	@Transactional
