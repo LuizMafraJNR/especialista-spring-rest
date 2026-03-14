@@ -1,0 +1,580 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-03-12T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v12.4.0",
+  "resources": [
+    {
+      "_id": "wrk_algafood",
+      "_type": "workspace",
+      "name": "AlgaFood API",
+      "description": "Coleção completa de endpoints da API AlgaFood",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_algafood_base",
+      "_type": "environment",
+      "parentId": "wrk_algafood",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080"
+      },
+      "color": null,
+      "isPrivate": false
+    },
+    {
+      "_id": "fld_cidades",
+      "_type": "request_group",
+      "parentId": "wrk_algafood",
+      "name": "Cidades",
+      "description": "Endpoints de gerenciamento de cidades"
+    },
+    {
+      "_id": "fld_cozinhas",
+      "_type": "request_group",
+      "parentId": "wrk_algafood",
+      "name": "Cozinhas",
+      "description": "Endpoints de gerenciamento de cozinhas"
+    },
+    {
+      "_id": "fld_estados",
+      "_type": "request_group",
+      "parentId": "wrk_algafood",
+      "name": "Estados",
+      "description": "Endpoints de gerenciamento de estados"
+    },
+    {
+      "_id": "fld_formas_pagamento",
+      "_type": "request_group",
+      "parentId": "wrk_algafood",
+      "name": "Formas de Pagamento",
+      "description": "Endpoints de gerenciamento de formas de pagamento"
+    },
+    {
+      "_id": "fld_grupos",
+      "_type": "request_group",
+      "parentId": "wrk_algafood",
+      "name": "Grupos",
+      "description": "Endpoints de gerenciamento de grupos de permissão"
+    },
+    {
+      "_id": "fld_restaurantes",
+      "_type": "request_group",
+      "parentId": "wrk_algafood",
+      "name": "Restaurantes",
+      "description": "Endpoints de gerenciamento de restaurantes"
+    },
+    {
+      "_id": "fld_restaurantes_formas_pagamento",
+      "_type": "request_group",
+      "parentId": "wrk_algafood",
+      "name": "Restaurantes - Formas de Pagamento",
+      "description": "Endpoints de formas de pagamento por restaurante"
+    },
+    {
+      "_id": "fld_usuarios",
+      "_type": "request_group",
+      "parentId": "wrk_algafood",
+      "name": "Usuários",
+      "description": "Endpoints de gerenciamento de usuários"
+    },
+
+    {
+      "_id": "req_cidades_listar",
+      "_type": "request",
+      "parentId": "fld_cidades",
+      "name": "Listar Cidades",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cidades",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_cidades_buscar",
+      "_type": "request",
+      "parentId": "fld_cidades",
+      "name": "Buscar Cidade por ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cidades/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_cidades_adicionar",
+      "_type": "request",
+      "parentId": "fld_cidades",
+      "name": "Adicionar Cidade",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cidades",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Uberlândia\",\n  \"estado\": {\n    \"id\": 1\n  }\n}"
+      }
+    },
+    {
+      "_id": "req_cidades_atualizar",
+      "_type": "request",
+      "parentId": "fld_cidades",
+      "name": "Atualizar Cidade",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cidades/1",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Uberlândia Atualizada\",\n  \"estado\": {\n    \"id\": 1\n  }\n}"
+      }
+    },
+    {
+      "_id": "req_cidades_remover",
+      "_type": "request",
+      "parentId": "fld_cidades",
+      "name": "Remover Cidade",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/cidades/1",
+      "headers": [],
+      "body": {}
+    },
+
+    {
+      "_id": "req_cozinhas_listar",
+      "_type": "request",
+      "parentId": "fld_cozinhas",
+      "name": "Listar Cozinhas",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cozinhas",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_cozinhas_buscar",
+      "_type": "request",
+      "parentId": "fld_cozinhas",
+      "name": "Buscar Cozinha por ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cozinhas/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_cozinhas_adicionar",
+      "_type": "request",
+      "parentId": "fld_cozinhas",
+      "name": "Adicionar Cozinha",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cozinhas",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Brasileira\"\n}"
+      }
+    },
+    {
+      "_id": "req_cozinhas_atualizar",
+      "_type": "request",
+      "parentId": "fld_cozinhas",
+      "name": "Atualizar Cozinha",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cozinhas/1",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Brasileira Contemporânea\"\n}"
+      }
+    },
+    {
+      "_id": "req_cozinhas_remover",
+      "_type": "request",
+      "parentId": "fld_cozinhas",
+      "name": "Remover Cozinha",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/cozinhas/1",
+      "headers": [],
+      "body": {}
+    },
+
+    {
+      "_id": "req_estados_listar",
+      "_type": "request",
+      "parentId": "fld_estados",
+      "name": "Listar Estados",
+      "method": "GET",
+      "url": "{{ _.base_url }}/estados",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_estados_buscar",
+      "_type": "request",
+      "parentId": "fld_estados",
+      "name": "Buscar Estado por ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/estados/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_estados_salvar",
+      "_type": "request",
+      "parentId": "fld_estados",
+      "name": "Salvar Estado",
+      "method": "POST",
+      "url": "{{ _.base_url }}/estados",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Minas Gerais\"\n}"
+      }
+    },
+    {
+      "_id": "req_estados_atualizar",
+      "_type": "request",
+      "parentId": "fld_estados",
+      "name": "Atualizar Estado",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/estados/1",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Minas Gerais Atualizado\"\n}"
+      }
+    },
+    {
+      "_id": "req_estados_remover",
+      "_type": "request",
+      "parentId": "fld_estados",
+      "name": "Remover Estado",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/estados/1",
+      "headers": [],
+      "body": {}
+    },
+
+    {
+      "_id": "req_formas_pagamento_listar",
+      "_type": "request",
+      "parentId": "fld_formas_pagamento",
+      "name": "Listar Formas de Pagamento",
+      "method": "GET",
+      "url": "{{ _.base_url }}/formas-pagamento",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_formas_pagamento_buscar",
+      "_type": "request",
+      "parentId": "fld_formas_pagamento",
+      "name": "Buscar Forma de Pagamento por ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/formas-pagamento/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_formas_pagamento_salvar",
+      "_type": "request",
+      "parentId": "fld_formas_pagamento",
+      "name": "Salvar Forma de Pagamento",
+      "method": "POST",
+      "url": "{{ _.base_url }}/formas-pagamento",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"descricao\": \"Cartão de Crédito\"\n}"
+      }
+    },
+    {
+      "_id": "req_formas_pagamento_atualizar",
+      "_type": "request",
+      "parentId": "fld_formas_pagamento",
+      "name": "Atualizar Forma de Pagamento",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/formas-pagamento/1",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"descricao\": \"Cartão de Débito\"\n}"
+      }
+    },
+    {
+      "_id": "req_formas_pagamento_deletar",
+      "_type": "request",
+      "parentId": "fld_formas_pagamento",
+      "name": "Deletar Forma de Pagamento",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/formas-pagamento/1",
+      "headers": [],
+      "body": {}
+    },
+
+    {
+      "_id": "req_grupos_listar",
+      "_type": "request",
+      "parentId": "fld_grupos",
+      "name": "Listar Grupos",
+      "method": "GET",
+      "url": "{{ _.base_url }}/grupos",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_grupos_buscar",
+      "_type": "request",
+      "parentId": "fld_grupos",
+      "name": "Buscar Grupo por ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/grupos/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_grupos_adicionar",
+      "_type": "request",
+      "parentId": "fld_grupos",
+      "name": "Adicionar Grupo",
+      "method": "POST",
+      "url": "{{ _.base_url }}/grupos",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Gerente\"\n}"
+      }
+    },
+    {
+      "_id": "req_grupos_atualizar",
+      "_type": "request",
+      "parentId": "fld_grupos",
+      "name": "Atualizar Grupo",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/grupos/1",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Gerente Sênior\"\n}"
+      }
+    },
+    {
+      "_id": "req_grupos_remover",
+      "_type": "request",
+      "parentId": "fld_grupos",
+      "name": "Remover Grupo",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/grupos/1",
+      "headers": [],
+      "body": {}
+    },
+
+    {
+      "_id": "req_restaurantes_listar",
+      "_type": "request",
+      "parentId": "fld_restaurantes",
+      "name": "Listar Restaurantes",
+      "method": "GET",
+      "url": "{{ _.base_url }}/restaurantes",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_restaurantes_buscar",
+      "_type": "request",
+      "parentId": "fld_restaurantes",
+      "name": "Buscar Restaurante por ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/restaurantes/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_restaurantes_adicionar",
+      "_type": "request",
+      "parentId": "fld_restaurantes",
+      "name": "Adicionar Restaurante",
+      "method": "POST",
+      "url": "{{ _.base_url }}/restaurantes",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Thai Gourmet\",\n  \"taxaFrete\": 12.00,\n  \"cozinha\": {\n    \"id\": 1\n  },\n  \"endereco\": {\n    \"cep\": \"38400-999\",\n    \"logradouro\": \"Rua João Pinheiro\",\n    \"numero\": \"1000\",\n    \"complemento\": \"Apto 800\",\n    \"bairro\": \"Centro\",\n    \"cidade\": {\n      \"id\": 1\n    }\n  }\n}"
+      }
+    },
+    {
+      "_id": "req_restaurantes_atualizar",
+      "_type": "request",
+      "parentId": "fld_restaurantes",
+      "name": "Atualizar Restaurante",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/restaurantes/1",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Thai Gourmet Atualizado\",\n  \"taxaFrete\": 15.00,\n  \"cozinha\": {\n    \"id\": 1\n  },\n  \"endereco\": {\n    \"cep\": \"38400-999\",\n    \"logradouro\": \"Rua João Pinheiro\",\n    \"numero\": \"1000\",\n    \"complemento\": \"Sala 2\",\n    \"bairro\": \"Centro\",\n    \"cidade\": {\n      \"id\": 1\n    }\n  }\n}"
+      }
+    },
+    {
+      "_id": "req_restaurantes_ativar",
+      "_type": "request",
+      "parentId": "fld_restaurantes",
+      "name": "Ativar Restaurante",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/restaurantes/1/ativo",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_restaurantes_inativar",
+      "_type": "request",
+      "parentId": "fld_restaurantes",
+      "name": "Inativar Restaurante",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/restaurantes/1/ativo",
+      "headers": [],
+      "body": {}
+    },
+
+    {
+      "_id": "req_restaurantes_formas_pagamento_listar",
+      "_type": "request",
+      "parentId": "fld_restaurantes_formas_pagamento",
+      "name": "Listar Formas de Pagamento do Restaurante",
+      "method": "GET",
+      "url": "{{ _.base_url }}/restaurantes/1/formas-pagamento",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+
+    {
+      "_id": "req_usuarios_listar",
+      "_type": "request",
+      "parentId": "fld_usuarios",
+      "name": "Listar Usuários",
+      "method": "GET",
+      "url": "{{ _.base_url }}/usuarios",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_usuarios_buscar",
+      "_type": "request",
+      "parentId": "fld_usuarios",
+      "name": "Buscar Usuário por ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/usuarios/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_usuarios_adicionar",
+      "_type": "request",
+      "parentId": "fld_usuarios",
+      "name": "Adicionar Usuário",
+      "method": "POST",
+      "url": "{{ _.base_url }}/usuarios",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"João da Silva\",\n  \"email\": \"joao.silva@algafood.com\",\n  \"senha\": \"123456\"\n}"
+      }
+    },
+    {
+      "_id": "req_usuarios_atualizar",
+      "_type": "request",
+      "parentId": "fld_usuarios",
+      "name": "Atualizar Usuário",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/usuarios/1",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"João da Silva Atualizado\",\n  \"email\": \"joao.silva.novo@algafood.com\"\n}"
+      }
+    },
+    {
+      "_id": "req_usuarios_alterar_senha",
+      "_type": "request",
+      "parentId": "fld_usuarios",
+      "name": "Alterar Senha do Usuário",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/usuarios/1/senha",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"senhaAtual\": \"123456\",\n  \"novaSenha\": \"654321\"\n}"
+      }
+    }
+  ]
+}

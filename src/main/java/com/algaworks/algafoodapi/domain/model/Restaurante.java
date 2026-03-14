@@ -7,7 +7,9 @@ import com.algaworks.algafoodapi.core.validation.ValorZeroIncluiDescricao;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -57,7 +59,7 @@ public class Restaurante {
     @JoinTable(name = "restaurante_forma_pagamento",
     joinColumns = @JoinColumn(name = "restaurante_id"),
     inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
-    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+    private Set<FormaPagamento> formasPagamento = new HashSet<>();
 
     @Embedded
     private Endereco endereco;
@@ -79,8 +81,20 @@ public class Restaurante {
         setAtivo(true);
     }
 
+    // GET /restaurante/{id}/formas-pagamento
+
     public void inativar()
     {
         setAtivo(false);
+    }
+
+    public Boolean adicionarFormaPagamento(FormaPagamento formaPagamento)
+    {
+        return this.formasPagamento.add(formaPagamento);
+    }
+
+    public Boolean removerFormaPagamento(FormaPagamento formaPagamento)
+    {
+        return this.formasPagamento.remove(formaPagamento);
     }
 }

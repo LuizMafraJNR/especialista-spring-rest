@@ -1,2 +1,2 @@
-alter table restaurante add ativo tinyint(1) not null default 1;
+alter table restaurante add ativo boolean not null default true;
 update restaurante set ativo = true;

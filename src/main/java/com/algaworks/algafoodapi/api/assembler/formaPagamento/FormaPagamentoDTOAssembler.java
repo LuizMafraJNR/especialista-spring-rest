@@ -2,7 +2,9 @@ package com.algaworks.algafoodapi.api.assembler.formaPagamento;
 
 import com.algaworks.algafoodapi.api.model.FormaPagamentoOutput;
 import com.algaworks.algafoodapi.domain.model.FormaPagamento;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +21,7 @@ public class FormaPagamentoDTOAssembler
 		return modelMapper.map(formaPagamento, FormaPagamentoOutput.class);
 	}
 
-	public List<FormaPagamentoOutput> toCollectDto(List<FormaPagamento> formasPagamento)
+	public List<FormaPagamentoOutput> toCollectDto(Collection<FormaPagamento> formasPagamento)
 	{
 		return formasPagamento.stream()
 			.map(this::toFormaPagamentoDTO)
