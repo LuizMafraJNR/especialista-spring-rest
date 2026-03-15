@@ -2,10 +2,7 @@ package com.algaworks.algafoodapi.domain.service;
 
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.exception.RestauranteNaoEncontradoException;
-import com.algaworks.algafoodapi.domain.model.Cidade;
-import com.algaworks.algafoodapi.domain.model.Cozinha;
-import com.algaworks.algafoodapi.domain.model.FormaPagamento;
-import com.algaworks.algafoodapi.domain.model.Restaurante;
+import com.algaworks.algafoodapi.domain.model.*;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import com.algaworks.algafoodapi.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
@@ -32,6 +29,9 @@ public class CadastroRestauranteService {
     private CadastroCidadeService cidadeService;
 	@Autowired
 	private CadastroCidadeService cadastroCidadeService;
+
+    @Autowired
+    private CadastroProdutoService cadastroProdutoService;
 
     @Autowired
     private CadastroFormaPagamentoService cadastroFormaPagamentoService;
