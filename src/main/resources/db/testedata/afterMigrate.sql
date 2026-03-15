@@ -44,12 +44,28 @@ insert into cidade (id, nome, estado_id) overriding system value values (3, 'Sã
 insert into cidade (id, nome, estado_id) overriding system value values (4, 'Campinas', 2);
 insert into cidade (id, nome, estado_id) overriding system value values (5, 'Fortaleza', 3);
 
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) overriding system value values (1, 'Thai Gourmet', 10, 1, now() at time zone 'UTC', now() at time zone 'UTC', true, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) overriding system value values (2, 'Thai Delivery', 9.50, 1, now() at time zone 'UTC', now() at time zone 'UTC', true);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) overriding system value values (3, 'Tuk Tuk Comida Indiana', 15, 2, now() at time zone 'UTC', now() at time zone 'UTC', true);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) overriding system value values (4, 'Java Steakhouse', 12, 3, now() at time zone 'UTC', now() at time zone 'UTC', true);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) overriding system value values (5, 'Lanchonete do Tio Sam', 11, 4, now() at time zone 'UTC', now() at time zone 'UTC', true);
-insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) overriding system value values (6, 'Bar da Maria', 6, 4, now() at time zone 'UTC', now() at time zone 'UTC', true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo,
+                         aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero,
+                         endereco_bairro) overriding system value
+values (1, 'Thai Gourmet', 10, 1, now() at time zone 'UTC', now() at time zone 'UTC', true, true, 1,
+        '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo,
+                         aberto) overriding system value
+values (2, 'Thai Delivery', 9.50, 1, now() at time zone 'UTC', now() at time zone 'UTC', true, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo,
+                         aberto) overriding system value
+values (3, 'Tuk Tuk Comida Indiana', 15, 2, now() at time zone 'UTC', now() at time zone 'UTC', true,
+        true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo,
+                         aberto) overriding system value
+values (4, 'Java Steakhouse', 12, 3, now() at time zone 'UTC', now() at time zone 'UTC', true, true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo,
+                         aberto) overriding system value
+values (5, 'Lanchonete do Tio Sam', 11, 4, now() at time zone 'UTC', now() at time zone 'UTC', true,
+        true);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo,
+                         aberto) overriding system value
+values (6, 'Bar da Maria', 6, 4, now() at time zone 'UTC', now() at time zone 'UTC', true, true);
 
 insert into forma_pagamento (id, descricao) overriding system value values (1, 'Cartão de crédito');
 insert into forma_pagamento (id, descricao) overriding system value values (2, 'Cartão de débito');

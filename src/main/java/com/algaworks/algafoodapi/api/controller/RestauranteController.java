@@ -101,6 +101,18 @@ public class RestauranteController
 		}
 	}
 
+	@PutMapping("/{restauranteId}/abrir")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void abrir(@PathVariable Long restauranteId) {
+		cadastroRestauranteService.abrirRestaurante(restauranteId);
+	}
+
+	@PutMapping("/{restauranteId}/fechar")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void fechar(@PathVariable Long restauranteId) {
+		cadastroRestauranteService.fecharRestaurante(restauranteId);
+	}
+
 	/*
 	 *
 	 * Para a proxima aula 11.11

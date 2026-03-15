@@ -14,4 +14,5 @@ public class RestauranteOutput
 	private CozinhaOutput cozinha;
 	private EnderecoModel endereco;
 	private Boolean ativo;
+	private Boolean aberto;
 }
