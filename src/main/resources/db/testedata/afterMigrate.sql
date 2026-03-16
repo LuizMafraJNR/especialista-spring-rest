@@ -44,6 +44,8 @@ insert into cidade (id, nome, estado_id) overriding system value values (3, 'Sã
 insert into cidade (id, nome, estado_id) overriding system value values (4, 'Campinas', 2);
 insert into cidade (id, nome, estado_id) overriding system value values (5, 'Fortaleza', 3);
 
+insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
+
 insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo,
                          aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero,
                          endereco_bairro) overriding system value
@@ -74,9 +76,7 @@ insert into forma_pagamento (id, descricao) overriding system value values (3, '
 insert into permissao (id, nome, descricao) overriding system value values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
 insert into permissao (id, nome, descricao) overriding system value values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
 
-insert into grupo (id, nome) overriding system value values (1, 'Gerentes');
-insert into grupo (id, nome) overriding system value values (2, 'Vendedores');
-insert into grupo (id, nome) overriding system value values (3, 'Cadastradores');
+insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 insert into usuario (id, nome, email, senha, data_cadastro) overriding system value values
     (1, 'João da Silva', 'joao.ger@algafood.com', '123', now() at time zone 'UTC'),

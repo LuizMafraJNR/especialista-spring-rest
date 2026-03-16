@@ -1,5 +1,7 @@
 package com.algaworks.algafoodapi.domain.model;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -21,5 +23,13 @@ public class Grupo {
     @JoinTable(name = "grupo_permisao",
     joinColumns = @JoinColumn(name = "grupo_id"),
     inverseJoinColumns = @JoinColumn(name = "permissao_id"))
-    private List<Permissao> permissoes = new ArrayList<>();
+    private Set<Permissao> permissoes = new HashSet<>();
+
+    public Boolean associarPermissao(Permissao permissao) {
+        return this.permissoes.add(permissao);
+    }
+
+    public Boolean desassociarPermissao(Permissao permissao) {
+        return this.permissoes.remove(permissao);
+    }
 }

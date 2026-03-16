@@ -1,0 +1,15 @@
+package com.algaworks.algafoodapi.domain.exception;
+
+public class PermissaoNaoEncontradaException extends RuntimeException
+{
+	public PermissaoNaoEncontradaException(String mensagem)
+	{
+		super(mensagem);
+
+	}
+
+	public PermissaoNaoEncontradaException(Long permissaoId)
+	{
+		this(String.format("Não existe um cadastro de permissão com código %d", permissaoId));
+	}
+}
