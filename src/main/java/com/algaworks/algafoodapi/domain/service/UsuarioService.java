@@ -2,19 +2,24 @@ package com.algaworks.algafoodapi.domain.service;
 
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import com.algaworks.algafoodapi.domain.exception.UsuarioNaoEncontradoException;
+import com.algaworks.algafoodapi.domain.model.Grupo;
 import com.algaworks.algafoodapi.domain.model.Usuario;
 import com.algaworks.algafoodapi.domain.repository.UsuarioRepository;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioService
 {
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+
+	private final UsuarioRepository usuarioRepository;
+	private final GrupoService  grupoService;
 
 	//	aqui ele vai salvar no banco de dados por conta do contexto de persistência
 	/*
@@ -61,5 +66,19 @@ public class UsuarioService
 	{
 		return usuarioRepository.findById(usuarioId)
 			.orElseThrow(() -> new UsuarioNaoEncontradoException(usuarioId));
+	}
+
+	@Transactional
+	public Boolean desassociarGrupo(Long usuarioId, Long grupoId) {
+		Grupo grupo = grupoService.buscarOuFalhar(grupoId);
+		Usuario usuario = this.buscarOuFalhar(usuarioId);
+		return usuario.desassociarGrupo(grupo);
+	}
+
+	@Transactional
+	public Boolean associarGrupo(Long usuarioId, Long grupoId) {
+		Grupo grupo = grupoService.buscarOuFalhar(grupoId);
+		Usuario usuario = this.buscarOuFalhar(usuarioId);
+		return usuario.associarGrupo(grupo);
 	}
 }

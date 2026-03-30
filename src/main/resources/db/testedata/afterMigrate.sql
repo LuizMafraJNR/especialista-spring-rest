@@ -15,6 +15,7 @@ delete from usuario;
 delete from cidade;
 delete from estado;
 delete from cozinha;
+delete from restaurante_usuario_responsavel;
 
 SET session_replication_role = DEFAULT;
 
@@ -79,12 +80,18 @@ insert into permissao (id, nome, descricao) overriding system value values (2, '
 insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 insert into usuario (id, nome, email, senha, data_cadastro) overriding system value values
+    (5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', now() at time zone 'UTC');
+
+
+insert into usuario (id, nome, email, senha, data_cadastro) overriding system value values
     (1, 'João da Silva', 'joao.ger@algafood.com', '123', now() at time zone 'UTC'),
     (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', now() at time zone 'UTC'),
     (3, 'José Souza', 'jose.aux@algafood.com', '123', now() at time zone 'UTC'),
     (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', now() at time zone 'UTC');
 
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
+
+insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
 
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, true, 1);
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Camarão tailandês', '16 camarões grandes ao molho picante', 110, true, 1);

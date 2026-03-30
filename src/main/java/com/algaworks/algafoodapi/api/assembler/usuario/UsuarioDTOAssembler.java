@@ -2,6 +2,7 @@ package com.algaworks.algafoodapi.api.assembler.usuario;
 
 import com.algaworks.algafoodapi.api.model.UsuarioOutput;
 import com.algaworks.algafoodapi.domain.model.Usuario;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
@@ -19,7 +20,7 @@ public class UsuarioDTOAssembler
 		return modelMapper.map(usuario, UsuarioOutput.class);
 	}
 
-	public List<UsuarioOutput> toCollectionDTO(List<Usuario> usuarios) {
+	public List<UsuarioOutput> toCollectionDTO(Collection<Usuario> usuarios) {
 		return usuarios.stream()
 			.map(this::toDTO)
 			.collect(Collectors.toList());

@@ -2,6 +2,7 @@ package com.algaworks.algafoodapi.api.assembler.grupo;
 
 import com.algaworks.algafoodapi.api.model.GrupoOutput;
 import com.algaworks.algafoodapi.domain.model.Grupo;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
@@ -18,7 +19,7 @@ public class GrupoDTOAssembler
 		return modelMapper.map(grupo, GrupoOutput.class);
 	}
 
-	public List<GrupoOutput> toCollectionDTO(List<Grupo> grupos) {
+	public List<GrupoOutput> toCollectionDTO(Collection<Grupo> grupos) {
 		return grupos.stream()
 				.map(this::toGrupoDTO)
 				.collect(Collectors.toList());

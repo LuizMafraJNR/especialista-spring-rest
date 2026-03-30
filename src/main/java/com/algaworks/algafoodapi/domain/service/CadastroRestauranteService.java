@@ -7,34 +7,36 @@ import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import com.algaworks.algafoodapi.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
 import javax.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CadastroRestauranteService {
     public static final String MSG_NÃO_FOI_ENCONTRADO_UM_RESTAURANTE_COM_O_ID_D = "Não foi encontrado um restaurante com o ID %d";
     public static final String MSG_NÃO_FOI_ENCONTRADO_UMA_COZINHA_COM_O_ID = "Não foi encontrado uma cozinha com o ID %d";
     public static final String MSG_HÁ_UMA_RESTAURANTE_COM_UMA_COZINHA_EM_UTILIZAÇÃO = "Há uma restaurante com uma cozinha em utilização";
-    @Autowired
-    private RestauranteRepository restauranteRepository;
-    @Autowired
-    private CozinhaRepository cozinhaRepository;
-    @Autowired
-    private CadastroCozinhaService cozinhaService;
-    @Autowired
-    private FormaPagamentoRepository formaPagamentoRepository;
-    @Autowired
-    private CadastroCidadeService cidadeService;
-	@Autowired
-	private CadastroCidadeService cadastroCidadeService;
 
-    @Autowired
-    private CadastroProdutoService cadastroProdutoService;
+    private final RestauranteRepository restauranteRepository;
 
-    @Autowired
-    private CadastroFormaPagamentoService cadastroFormaPagamentoService;
+    private final CozinhaRepository cozinhaRepository;
+
+    private final CadastroCozinhaService cozinhaService;
+
+    private final FormaPagamentoRepository formaPagamentoRepository;
+
+    private final CadastroCidadeService cidadeService;
+
+	private final CadastroCidadeService cadastroCidadeService;
+
+    private final CadastroProdutoService cadastroProdutoService;
+
+    private final CadastroFormaPagamentoService cadastroFormaPagamentoService;
+
+    private final UsuarioService usuarioService;
 
     public Restaurante buscarOuFalhar(Long id)
     {
@@ -113,5 +115,19 @@ public class CadastroRestauranteService {
     public void abrirRestaurante(Long restauranteId) {
         Restaurante restaurante = buscarOuFalhar(restauranteId);
         restaurante.abrirRestaurante();
+    }
+
+    @Transactional
+    public void associarUsuario(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = this.buscarOuFalhar(restauranteId);
+        Usuario usuario = usuarioService.buscarOuFalhar(usuarioId);
+        restaurante.associarUsuario(usuario);
+    }
+
+    @Transactional
+    public void desassociarUsuario(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = this.buscarOuFalhar(restauranteId);
+        Usuario usuario = usuarioService.buscarOuFalhar(usuarioId);
+        restaurante.desassociarUsuario(usuario);
     }
 }
