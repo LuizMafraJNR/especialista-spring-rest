@@ -6,6 +6,7 @@ import com.algaworks.algafoodapi.domain.model.*;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import com.algaworks.algafoodapi.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
+import java.util.List;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,17 @@ public class CadastroRestauranteService {
         Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
         restauranteAtual.ativar();
     }
+
+    @Transactional
+    public void ativar(List<Long> restaurantesIds) {
+        restaurantesIds.forEach(this::ativar);
+    }
+
+    @Transactional
+    public void inativar(List<Long> restaurantesIds) {
+        restaurantesIds.forEach(this::inativar);
+    }
+
 
     @Transactional
     public void inativar(Long restauranteId) {
