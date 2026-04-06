@@ -121,4 +121,12 @@ public class Restaurante {
     public Boolean desassociarUsuario(Usuario usuario) {
         return this.usuarios.remove(usuario);
     }
+
+    public Boolean aceitaFormaPagamento(FormaPagamento formaPagamento) {
+        return getFormasPagamento().contains(formaPagamento);
+    }
+
+    public Boolean naoAceitaFormaPagamento(FormaPagamento formaPagamento) {
+        return !aceitaFormaPagamento(formaPagamento);
+    }
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EnderecoModel
+public class EnderecoOutput
 {
 
 	private String cep;
