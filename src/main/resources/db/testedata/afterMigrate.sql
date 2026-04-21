@@ -30,6 +30,9 @@ ALTER SEQUENCE produto_id_seq RESTART WITH 1;
 ALTER SEQUENCE restaurante_id_seq RESTART WITH 1;
 ALTER SEQUENCE usuario_id_seq RESTART WITH 1;
 
+ALTER SEQUENCE pedido_id_seq RESTART WITH 1;
+ALTER SEQUENCE item_pedido_id_seq RESTART WITH 1;
+
 insert into cozinha (id, nome) overriding system value values (1, 'Tailandesa');
 insert into cozinha (id, nome) overriding system value values (2, 'Indiana');
 insert into cozinha (id, nome) overriding system value values (3, 'Argentina');
@@ -131,3 +134,7 @@ values (2, 4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro',
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao) overriding system value
 values (3, 2, 6, 1, 79, 79, 'Ao ponto');
+
+-- Atualiza as sequences para o próximo valor disponível após os inserts com IDs explícitos
+SELECT setval('pedido_id_seq', (SELECT MAX(id) FROM pedido));
+SELECT setval('item_pedido_id_seq', (SELECT MAX(id) FROM item_pedido));

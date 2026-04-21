@@ -42,8 +42,8 @@ public class CadastroProdutoService
 		}
 	}
 
-	public Produto buscarOuFalhar(Long produtoId, Long restauranteId) {
+	public Produto buscarOuFalhar(Long restauranteId, Long produtoId) {
 		return produtoRepository.findById(restauranteId, produtoId)
-			.orElseThrow();
+			.orElseThrow(() -> new ProdutoNaoEncontradaException(produtoId));
 	}
 }

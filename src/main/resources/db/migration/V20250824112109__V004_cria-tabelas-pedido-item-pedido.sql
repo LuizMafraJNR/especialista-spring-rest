@@ -30,7 +30,7 @@ create table pedido (
 
 create table item_pedido (
                              id bigint not null generated always as identity,
-                             quantidade smallint not null,
+                             quantidade integer not null,
                              preco_unitario decimal(10,2) not null,
                              preco_total decimal(10,2) not null,
                              observacao varchar(255) null,

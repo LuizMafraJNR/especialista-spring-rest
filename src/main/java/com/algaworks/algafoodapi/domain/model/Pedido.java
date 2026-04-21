@@ -45,11 +45,19 @@ public class Pedido {
     @JoinColumn(name = "usuario_cliente_id", nullable = false)
     private Usuario cliente;
 
-    @OneToMany(mappedBy = "pedido")
+    /**
+     * Relacionamento One-to-Many com ItemPedido.
+     * O CascadeType.ALL propaga todas as operações de persistência (persist, merge, remove, etc.)
+     * do Pedido para os ItemPedido associados, garantindo que itens sejam salvos, atualizados
+     * ou excluídos automaticamente junto com o pedido, evitando gerenciamento manual e erros.
+     */
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens = new ArrayList<>();
 
     public void calcularValorTotal() {
-        this.subtotal = this.itens.stream()
+        getItens().forEach(ItemPedido::calcularPrecoTotal);
+
+        this.subtotal = getItens().stream()
             .map(item -> item.getPrecoTotal())
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
