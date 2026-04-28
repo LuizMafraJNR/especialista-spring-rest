@@ -74,29 +74,28 @@ public class Pedido {
     }
 
     public void confirmar() {
-        if(!getStatus().equals(StatusPedido.CRIADO)) {
-            throw new NegocioException(String.format("Pedido com status %s não pode ser confirmado.",
-                getStatus()));
-        }
         setStatus(StatusPedido.CONFIRMADO);
         setDataConfirmacao(OffsetDateTime.now());
     }
 
     public void entregar() {
-        if(!getStatus().equals(StatusPedido.CONFIRMADO)) {
-            throw new NegocioException(String.format("Pedido com status %s não pode ser entregue.",
-                getStatus()));
-        }
         setStatus(StatusPedido.ENTREGUE);
         setDataEntrega(OffsetDateTime.now());
     }
 
     public void cancelar() {
-        if(!getStatus().equals(StatusPedido.CRIADO)) {
-            throw new NegocioException(String.format("Pedido com status %s não pode ser cancelado.",
-                getStatus()));
-        }
+
         setStatus(StatusPedido.CANCELADO);
         setDataCancelamento(OffsetDateTime.now());
+    }
+
+    private void setStatus(StatusPedido novoStatus)
+    {
+        if (getStatus().podeSerAlteradoPara(novoStatus)) {
+            this.status = novoStatus;
+        } else {
+            throw new NegocioException(String.format("Status do pedido não pode ser alterado de %s para %s.",
+                getStatus(), novoStatus));
+        }
     }
 }
