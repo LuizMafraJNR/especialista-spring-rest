@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.domain.model;
 
+import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -72,5 +73,30 @@ public class Pedido {
         this.itens.forEach(item -> item.setPedido(this));
     }
 
+    public void confirmar() {
+        if(!getStatus().equals(StatusPedido.CRIADO)) {
+            throw new NegocioException(String.format("Pedido com status %s não pode ser confirmado.",
+                getStatus()));
+        }
+        setStatus(StatusPedido.CONFIRMADO);
+        setDataConfirmacao(OffsetDateTime.now());
+    }
 
+    public void entregar() {
+        if(!getStatus().equals(StatusPedido.CONFIRMADO)) {
+            throw new NegocioException(String.format("Pedido com status %s não pode ser entregue.",
+                getStatus()));
+        }
+        setStatus(StatusPedido.ENTREGUE);
+        setDataEntrega(OffsetDateTime.now());
+    }
+
+    public void cancelar() {
+        if(!getStatus().equals(StatusPedido.CRIADO)) {
+            throw new NegocioException(String.format("Pedido com status %s não pode ser cancelado.",
+                getStatus()));
+        }
+        setStatus(StatusPedido.CANCELADO);
+        setDataCancelamento(OffsetDateTime.now());
+    }
 }
