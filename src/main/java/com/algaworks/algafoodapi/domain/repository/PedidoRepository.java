@@ -2,12 +2,14 @@ package com.algaworks.algafoodapi.domain.repository;
 
 import com.algaworks.algafoodapi.domain.model.Pedido;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PedidoRepository extends CustomJpaRepository<Pedido, Long>
 {
+	Optional<Pedido> findByCodigo(String codigo);
 	/**
 	 * Realiza a busca de pedidos otimizada utilizando Fetch Join.
 	 * * Resolve o problema do N+1 ao carregar em uma única consulta SQL

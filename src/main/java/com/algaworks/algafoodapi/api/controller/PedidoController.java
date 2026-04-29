@@ -52,9 +52,9 @@ public class PedidoController
 		return pedidoResumoDTOAssembler.toCollectionResponse(todosPedidos);
 	}
 
-	@GetMapping("/{pedidoId}")
-	public PedidoOutput buscarPorId(@PathVariable Long pedidoId) {
-		Pedido pedido = pedidoService.buscarOuFalhar(pedidoId);
+	@GetMapping("/{codigoPedido}")
+	public PedidoOutput buscarPorId(@PathVariable String codigoPedido) {
+		Pedido pedido = pedidoService.buscarOuFalhar(codigoPedido);
 		return pedidoDTOAssembler.toResponse(pedido);
 	}
 }
